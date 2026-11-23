@@ -1,0 +1,2887 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الكتاب الإلكتروني التفاعلي: مقرر المصطلحات الطبية | Medical Signs and Symptoms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0369a1;
+            --primary-light: #0284c7;
+            --accent: #0d9488;
+            --bg-desk: #e2e8f0;
+            --paper-bg: #ffffff;
+            --paper-edge: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
+            --card-bg: #f8fafc;
+            --shadow-book: 0 20px 50px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.05);
+        }
+
+        body.dark-mode {
+            --bg-desk: #090d16;
+            --paper-bg: #111827;
+            --paper-edge: #1f2937;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --card-bg: #1e293b;
+            --shadow-book: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background: var(--bg-desk);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Top Book Reader Bar */
+        .reader-topbar {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 0.7rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .book-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .book-brand span.icon {
+            background: #0284c7;
+            padding: 0.3rem 0.55rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+
+        .reader-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .top-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 0.4rem 0.85rem;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .top-btn:hover {
+            background: #0284c7;
+            border-color: #0284c7;
+        }
+
+        .top-btn.active {
+            background: #0d9488;
+            border-color: #0d9488;
+        }
+
+        /* Progress Bar */
+        .reading-progress-wrap {
+            width: 100%;
+            height: 4px;
+            background: #1e293b;
+        }
+
+        .reading-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0ea5e9, #14b8a6);
+            transition: width 0.3s ease;
+        }
+
+        /* Main Book Stage */
+        .book-stage {
+            flex: 1;
+            max-width: 1120px;
+            width: 100%;
+            margin: 1.75rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-shell {
+            background: var(--paper-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-book);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 76vh;
+            position: relative;
+            border-right: 10px solid #0369a1;
+            transition: background 0.3s ease;
+        }
+
+        /* Page Header inside Book */
+        .page-meta-bar {
+            background: var(--paper-edge);
+            padding: 0.75rem 1.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .page-body {
+            padding: 2.25rem 2.5rem;
+            flex: 1;
+            animation: pageFade 0.35s ease;
+        }
+
+        @keyframes pageFade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cover Page Styling */
+        .cover-page {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 62vh;
+            background: radial-gradient(circle at top right, rgba(2, 132, 199, 0.08), transparent 60%),
+                        radial-gradient(circle at bottom left, rgba(13, 148, 136, 0.08), transparent 60%);
+            border: 2px double var(--border);
+            border-radius: 16px;
+        }
+
+        .cover-emblem {
+            width: 84px;
+            height: 84px;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            color: white;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 12px 24px rgba(2, 132, 199, 0.28);
+        }
+
+        .cover-college {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #0284c7;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        .cover-title {
+            font-size: 2.3rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
+        }
+
+        .cover-subtitle-en {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0d9488;
+            margin-bottom: 1.25rem;
+            direction: ltr;
+        }
+
+        .cover-desc {
+            max-width: 680px;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .cover-stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2.25rem;
+        }
+
+        .cover-stat-pill {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.65rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        .start-reading-btn {
+            background: linear-gradient(135deg, #0369a1, #0284c7);
+            color: white;
+            border: none;
+            padding: 0.95rem 2.2rem;
+            border-radius: 14px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .start-reading-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(2, 132, 199, 0.45);
+        }
+
+        /* Table of Contents */
+        .toc-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .toc-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0284c7;
+        }
+
+        .toc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .toc-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-right: 5px solid #0284c7;
+            border-radius: 14px;
+            padding: 1.2rem 1.35rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .toc-item:hover {
+            transform: translateY(-3px);
+            border-color: #0284c7;
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.12);
+        }
+
+        .toc-chap-num {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #0d9488;
+        }
+
+        .toc-chap-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .toc-chap-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.4rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed var(--border);
+        }
+
+        /* Chapter Intro Banner */
+        .chapter-banner {
+            background: linear-gradient(135deg, rgba(3, 105, 161, 0.09), rgba(13, 148, 136, 0.07));
+            border: 1px solid var(--border);
+            border-right: 6px solid #0369a1;
+            border-radius: 14px;
+            padding: 1.4rem 1.6rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .chapter-banner h2 {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #0284c7;
+            margin-bottom: 0.35rem;
+        }
+
+        .chapter-banner p {
+            color: var(--text-muted);
+            font-size: 0.96rem;
+        }
+
+        /* Filter & Search inside Book Pages */
+        .book-filter-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .book-search-input {
+            flex: 1;
+            min-width: 220px;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .book-search-input:focus {
+            border-color: #0284c7;
+        }
+
+        /* Term Cards inside Book */
+        .book-terms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.15rem;
+        }
+
+        .b-term-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.15rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.65rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .b-term-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(2, 132, 199, 0.1);
+        }
+
+        .b-term-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            direction: ltr;
+        }
+
+        .b-en-word {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.12rem;
+            font-weight: 800;
+            color: #0284c7;
+        }
+
+        .b-mini-btns {
+            display: flex;
+            gap: 0.35rem;
+        }
+
+        .mini-icon-btn {
+            background: var(--paper-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 7px;
+            padding: 0.25rem 0.55rem;
+            font-size: 0.78rem;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .mini-icon-btn:hover {
+            background: #0284c7;
+            color: white;
+            border-color: #0284c7;
+        }
+
+        .b-pron-box {
+            background: rgba(2, 132, 199, 0.08);
+            border-right: 3px solid #0284c7;
+            padding: 0.45rem 0.75rem;
+            border-radius: 8px;
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: #0369a1;
+        }
+
+        body.dark-mode .b-pron-box {
+            color: #38bdf8;
+        }
+
+        .b-ar-meaning {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #0d9488;
+        }
+
+        body.dark-mode .b-ar-meaning {
+            color: #2dd4bf;
+        }
+
+        .b-def-text {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            border-top: 1px dashed var(--border);
+            padding-top: 0.5rem;
+        }
+
+        /* Quiz Mode inside Book */
+        .quiz-card {
+            max-width: 650px;
+            margin: 1rem auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .quiz-word {
+            font-family: 'Inter', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0284c7;
+            margin: 0.75rem 0;
+            direction: ltr;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .quiz-opt-btn {
+            background: var(--paper-bg);
+            border: 2px solid var(--border);
+            color: var(--text-main);
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-opt-btn:hover {
+            border-color: #0284c7;
+        }
+
+        .quiz-opt-btn.correct {
+            background: #0d9488;
+            border-color: #0d9488;
+            color: white;
+        }
+
+        .quiz-opt-btn.wrong {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: white;
+        }
+
+        /* Bottom Page Navigation Footer */
+        .book-footer-nav {
+            background: var(--paper-edge);
+            border-top: 1px solid var(--border);
+            padding: 1rem 1.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-page-btn {
+            background: #0369a1;
+            color: white;
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, opacity 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-page-btn:hover:not(:disabled) {
+            background: #0284c7;
+        }
+
+        .nav-page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #0f172a;
+            color: white;
+            padding: 0.7rem 1.4rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 640px) {
+            .page-body {
+                padding: 1.25rem 1rem;
+            }
+            .cover-title {
+                font-size: 1.65rem;
+            }
+            .book-terms-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="reader-topbar">
+    <div class="book-brand">
+        <span class="icon">📖</span>
+        <span>كتاب المصطلحات الطبية التفاعلي</span>
+    </div>
+    <div class="reader-actions">
+        <button class="top-btn" onclick="goToPage(0)">🏠 الغلاف</button>
+        <button class="top-btn" onclick="goToPage(1)">📑 الفهرس</button>
+        <button class="top-btn" onclick="goToPage(8)">🔍 القاموس الشامل (A–Z)</button>
+        <button class="top-btn" onclick="goToPage(9)">🧠 اختبر نفسك</button>
+        <button class="top-btn" id="darkModeBtn" onclick="toggleDarkMode()">🌙 الوضع الليلي</button>
+    </div>
+</header>
+<div class="reading-progress-wrap">
+    <div class="reading-progress-bar" id="progressBar"></div>
+</div>
+
+<main class="book-stage">
+    <div class="book-shell">
+        <div class="page-meta-bar">
+            <span id="headerChapterLabel">غلاف الكتاب</span>
+            <span id="headerPageNum">صفحة 1 من 10</span>
+        </div>
+
+        <div class="page-body" id="pageBody"></div>
+
+        <div class="book-footer-nav">
+            <button class="nav-page-btn" id="prevBtn" onclick="prevPage()">→ الصفحة السابقة</button>
+            <div class="page-indicator" id="footerPageIndicator">1 / 10</div>
+            <button class="nav-page-btn" id="nextBtn" onclick="nextPage()">الصفحة التالية ←</button>
+        </div>
+    </div>
+</main>
+
+<div class="toast" id="toast">تم النسخ!</div>
+
+<script>
+    const medicalTerms = [
+        // A
+        {
+            en: "Abrasion",
+            ipa: "uh-BRAY-zhun  [/əˈbreɪʒən/]",
+            arPron: "أَبْـ - رَيْـ - جَـن",
+            ar: "السحج (كشط الجلد)",
+            def: "احتكاك سطحي أو تآكل في الطبقة الخارجية من الجلد.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Accreditation",
+            ipa: "uh-kred-ih-TAY-shun  [/əˌkrɛdɪˈteɪʃən/]",
+            arPron: "أَكْـ - رِيـ - دِيـ - تَيْـ - شَـن",
+            ar: "الاعتماد الصحي",
+            def: "تقييم خارجي للتحقق من التزام المنشأة الصحية بمعايير الجودة والسلامة المحددة.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Administrative Board",
+            ipa: "ad-MIN-ih-stray-tiv bord  [/ədˈmɪnɪstrətɪv bɔːrd/]",
+            arPron: "أَدْ - مِـنِـسْـ - تْرَيْـ - تِـف  بُـورْد",
+            ar: "المجلس الإداري",
+            def: "مجلس يتكون من رؤساء الجهات الإدارية المسؤولين عن إدارة الاتفاقيات وتنظيم العمل.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Adverse Events",
+            ipa: "AD-vurs ih-VENTS  [/ˈædvɜːrs ɪˈvɛnts/]",
+            arPron: "أَدْ - فِـيرْس  إِيـ - فِـنْـتْـس",
+            ar: "الأحداث الضارة / العكسية",
+            def: "حوادث غير مقصودة تحدث أثناء تقديم الرعاية الصحية وتسبب ضررًا للمريض.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Alzheimer's Disease",
+            ipa: "ALTS-hy-merz dih-ZEEZ  [/ˈɑːltshaɪmərz dɪˈziːz/]",
+            arPron: "أَلْـزْ - هَايْـ - مَـرْز  دِيـ - زِيـز",
+            ar: "مرض ألزهايمر",
+            def: "أكثر أسباب الخرف شيوعًا، ينتج عن تلف تدريجي في خلايا الدماغ.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Amputation",
+            ipa: "am-pyoo-TAY-shun  [/ˌæmpjʊˈteɪʃən/]",
+            arPron: "أَمْـ - بْيُـو - تَيْـ - شَـن",
+            ar: "البتر",
+            def: "إزالة طرف أو جزء آخر من الجسم بسبب إصابة أو مرض أو تدخل جراحي.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Anesthesia",
+            ipa: "an-es-THEE-zhuh  [/ˌænəsˈθiːʒə/]",
+            arPron: "أَنِـسْـ - ثِـيـ - زْيَـا",
+            ar: "التخدير",
+            def: "استخدام أدوية مخدرة لمنع الشعور بالألم أثناء الإجراءات والعمليات الطبية.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Angina",
+            ipa: "an-JY-nuh  [/ænˈdʒaɪnə/]",
+            arPron: "أَنْـ - جَـايْـ - نَـا",
+            ar: "الذبحة الصدرية",
+            def: "نوع من ألم الصدر يحدث بسبب انخفاض تدفق الدم إلى عضلة القلب.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Angio- (Prefix)",
+            ipa: "AN-jee-oh  [/ˈændʒioʊ/]",
+            arPron: "أَنْـ - جِـيُـو",
+            ar: "بادئة: متعلق بالأوعية الدموية",
+            def: "مقطع يُضاف في بداية الكلمة الطبية ليدل على ارتباطها بالأوعية الدموية.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Anuria",
+            ipa: "uh-NYOOR-ee-uh  [/əˈnjʊəriə/]",
+            arPron: "أَنْ - يُـورْ - يَـا",
+            ar: "انعدام البول",
+            def: "توقف أو عدم إنتاج البول من الكليتين.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Arrhythmias",
+            ipa: "uh-RITH-mee-uhz  [/əˈrɪðmiəz/]",
+            arPron: "أَرِذْ - مِـيَـاز",
+            ar: "اضطرابات نظم القلب",
+            def: "عدم انتظام في معدل أو إيقاع ضربات القلب.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Arteriosclerosis",
+            ipa: "ar-teer-ee-oh-skluh-ROH-sis  [/ɑːrˌtɪərioʊskləˈroʊsɪs/]",
+            arPron: "آرْ - تِـيرْ - يُـو - سْكْـلِـيـ - رُو - سِـس",
+            ar: "تصلب الشرايين",
+            def: "زيادة سمك وتصلب جدران الأوعية الدموية التي تنقل الأكسجين والمغذيات من القلب للجسم.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Asthma",
+            ipa: "AZ-muh  [/ˈæzmə/]",
+            arPron: "أَزْ - مَـا",
+            ar: "الربو",
+            def: "مرض تنفسي يؤدي إلى التهاب وانقباض عضلات الممرات الهوائية مما يصعّب التنفس.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Autism",
+            ipa: "AW-tiz-um  [/ˈɔːtɪzəm/]",
+            arPron: "أُو - تِـيـ - زِمْ",
+            ar: "التوحد",
+            def: "حالة نمائية تستمر مدى الحياة تؤثر في طريقة التواصل والتفاعل الاجتماعي.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+
+        // B
+        {
+            en: "Benchmark",
+            ipa: "BENCH-mark  [/ˈbɛntʃmɑːrk/]",
+            arPron: "بِـنْـشْ - مَـارْك",
+            ar: "المقارنة المرجعية",
+            def: "مقارنة أداء المنشأة الصحية مع هدف داخلي أو معيار مرجعي خارجي.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Biohazard",
+            ipa: "BY-oh-haz-erd  [/ˈbaɪoʊˌhæzərd/]",
+            arPron: "بَـايُـو - هَـا - زَرْد",
+            ar: "خطر بيولوجي",
+            def: "مواد بيولوجية (مثل الدم وسوائل الجسم) تشكل خطرًا على صحة الإنسان.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Biological Spill Kit",
+            ipa: "by-oh-LOJ-ih-kul spil kit  [/ˌbaɪəˈlɒdʒɪkəl spɪl kɪt/]",
+            arPron: "بَـايُـو - لُـو - جِـيـ - كَـل  سْـبِـل  كِـت",
+            ar: "حقيبة الانسكابات البيولوجية",
+            def: "مجموعة أدوات مخصصة للتعامل الفوري والآمن مع انسكابات الدم وسوائل الجسم.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Bradycardia",
+            ipa: "brad-ih-KAR-dee-uh  [/ˌbrædɪˈkɑːrdiə/]",
+            arPron: "بْـرَا - دِي - كَـارْ - دِيَـا",
+            ar: "بطء القلب",
+            def: "انخفاض معدل ضربات القلب إلى أقل من 60 نبضة في الدقيقة.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Bradypnea",
+            ipa: "brad-ip-NEE-uh  [/ˌbrædɪpˈniːə/]",
+            arPron: "بْـرَا - دِيـ - بْـنِـيَـا",
+            ar: "بطء التنفس",
+            def: "تنفس الشخص بمعدل أقل من الطبيعي في الدقيقة مقارنة بعمره ومستوى نشاطه.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Budgeting",
+            ipa: "BUJ-it-ing  [/ˈbʌdʒɪtɪŋ/]",
+            arPron: "بَـجِـ - تِـنْـج",
+            ar: "إعداد الميزانية",
+            def: "عملية حساب الأموال اللازم كسبها أو ادخارها وتخطيط كيفية إنفاقها خلال فترة زمنية.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+
+        // C
+        {
+            en: "Cardiac Arrest",
+            ipa: "KAR-dee-ak uh-REST  [/ˈkɑːrdiæk əˈrɛst/]",
+            arPron: "كَـارْ - دِيَـاك  أَرِسْـت",
+            ar: "توقف القلب المفاجئ",
+            def: "توقف مفاجئ لوظيفة القلب والتنفس والوعي يتطلب إنعاشًا فوريًا.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Cardiac Catheterization",
+            ipa: "KAR-dee-ak kath-ih-ter-eye-ZAY-shun  [/ˈkɑːrdiæk ˌkæθɪtəraɪˈzeɪʃən/]",
+            arPron: "كَـارْ - دِيَـاك  كَـا - ثِـيـ - تَـ - رَايْـ - زَيْـ - شَـن",
+            ar: "القسطرة القلبية",
+            def: "إجراء طبي لتشخيص وعلاج أمراض القلب والأوعية الدموية عبر أنبوب رفيع.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Cardiology",
+            ipa: "kar-dee-OL-uh-jee  [/ˌkɑːrdiˈɒlədʒi/]",
+            arPron: "كَـارْ - دِيُـو - لُـو - جِـي",
+            ar: "قسم أمراض القلب",
+            def: "القسم الطبي المختص بتشخيص وعلاج أمراض القلب والأوعية الدموية.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Cardiomyopathy",
+            ipa: "kar-dee-oh-my-OP-uh-thee  [/ˌkɑːrdioʊmaɪˈɒpəθi/]",
+            arPron: "كَـارْ - دِيُـو - مَـايُـو - بَـ - ثِـي",
+            ar: "اعتلال عضلة القلب",
+            def: "مرض يصيب عضلة القلب ويضعفها مما يقلل قدرتها على ضخ الدم بفعالية.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Cardiovascular System",
+            ipa: "kar-dee-oh-VAS-kyoo-ler SIS-tum  [/ˌkɑːrdioʊˈvæskjələr ˈsɪstəm/]",
+            arPron: "كَـارْ - دِيُـو - فَـاسْـ - كْيُـو - لَـر  سِـسْـ - تِـمْ",
+            ar: "الجهاز القلبي الوعائي",
+            def: "الجهاز المسؤول عن دوران الدم في الجسم ويشمل القلب والأوعية الدموية.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "-centesis (Suffix)",
+            ipa: "sen-TEE-sis  [/sɛnˈtiːsɪs/]",
+            arPron: "سِـنْـ - تِـيـ - سِـس",
+            ar: "لاحقة: البزل الجراحي",
+            def: "مقطع يُضاف في نهاية المصطلح الطبي ويعني ثقبًا جراحيًا لسحب السوائل.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Central Sterile Service Department (CSSD)",
+            ipa: "SEN-trul STER-yl SUR-vis dih-PART-munt  [/ˈsɛntrəl ˈstɛraɪl ˈsɜːrvɪs dɪˈpɑːrtmənt/]",
+            arPron: "سِـنْـ - تْـرَل  سْـتِـيـ - رَايْـل  سِـيرْ - فِـس  دِيـ - بَـارْتْـ - مِـنْـت",
+            ar: "قسم خدمات التعقيم المركزي",
+            def: "القسم المسؤول عن استقبال وتنظيف وتطهير وتعقيم وتوزيع الأدوات الطبية القابلة لإعادة الاستخدام.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Cesarean Section (C-Section)",
+            ipa: "sih-ZAIR-ee-un SEK-shun  [/sɪˈzɛəriən ˈsɛkʃən/]",
+            arPron: "سِـيـ - زَارْ - يَـن  سِـكْـ - شَـن",
+            ar: "العملية القيصرية",
+            def: "إجراء جراحي لتوليد الجنين عبر شق في البطن والرحم.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Chemotherapy",
+            ipa: "kee-moh-THER-uh-pee  [/ˌkiːmoʊˈθɛrəpi/]",
+            arPron: "كِـيـ - مُـو - ثِـيـ - رَا - بِـي",
+            ar: "العلاج الكيميائي",
+            def: "علاج دوائي يُستخدم لتدمير الخلايا السرطانية في قسم الأورام.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Cholecystitis",
+            ipa: "koh-lee-sis-TY-tis  [/ˌkoʊlɪsɪˈstaɪtɪs/]",
+            arPron: "كُـو - لِـي - سِـسْـ - تَـايْـ - تِـس",
+            ar: "التهاب المرارة",
+            def: "تورم وتهيج والتهاب يصيب المرارة.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Chronic Obstructive Pulmonary Disease (COPD)",
+            ipa: "KRON-ik ub-STRUK-tiv PUL-muh-ner-ee dih-ZEEZ  [/ˈkrɒnɪk əbˈstrʌktɪv ˈpʌlmənəri dɪˈziːz/]",
+            arPron: "كْـرُو - نِـك  أُوبْـ - سْـتْـرَكْـ - تِـف  بُـولْـ - مَـ - نَـ - رِي  دِيـ - زِيـز",
+            ar: "مرض الانسداد الرئوي المزمن",
+            def: "تلف مزمن في الممرات الهوائية والرئتين يجعل عملية التنفس صعبة.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Cleaning",
+            ipa: "KLEE-ning  [/ˈkliːnɪŋ/]",
+            arPron: "كْـلِـيـ - نِـنْـج",
+            ar: "التنظيف",
+            def: "إزالة المواد الغريبة والأوساخ من الأدوات والأسطح باستخدام الماء والمنظفات أو الإنزيمات.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Clinical Audit",
+            ipa: "KLIN-ih-kul AW-dit  [/ˈklɪnɪkəl ˈɔːdɪt/]",
+            arPron: "كْـلِـيـ - نِـيـ - كَـل  أُو - دِت",
+            ar: "التدقيق السريري",
+            def: "عملية قياس ومراجعة الممارسات السريرية الحالية ومقارنتها بالمعايير المعتمدة المبنية على الأدلة.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Clinical Governance",
+            ipa: "KLIN-ih-kul GUV-er-nuns  [/ˈklɪnɪkəl ˈɡʌvərnəns/]",
+            arPron: "كْـلِـيـ - نِـيـ - كَـل  جَـ - فَـرْ - نَـنْـس",
+            ar: "الحوكمة السريرية",
+            def: "الإطار الذي تتحمل من خلاله المؤسسات الصحية المساءلة عن التحسين المستمر لجودة الرعاية.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Colic",
+            ipa: "KOL-ik  [/ˈkɒlɪk/]",
+            arPron: "كُـو - لِـك",
+            ar: "المغص",
+            def: "نوبة من الألم الحاد في البطن تتركز في عضو مجوف.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Colitis",
+            ipa: "koh-LY-tis  [/kəˈlaɪtɪs/]",
+            arPron: "كُـو - لَايْـ - تِـس",
+            ar: "التهاب القولون",
+            def: "حالات مرضية تسبب التهاب بطانة الأمعاء الغليظة (القولون).",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Colono- (Prefix)",
+            ipa: "koh-LOH-noh  [/kəˈloʊnoʊ/]",
+            arPron: "كُـو - لُـو - نُـو",
+            ar: "بادئة: متعلق بالقولون (الأمعاء الغليظة)",
+            def: "مقطع يُضاف في بداية المصطلح الطبي ليدل على ارتباطه بالأمعاء الغليظة.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Committee",
+            ipa: "kuh-MIT-ee  [/kəˈmɪti/]",
+            arPron: "كَـ - مِـ - تِـي",
+            ar: "اللجنة",
+            def: "مجموعة صغيرة من الأشخاص يتم اختيارهم لتمثيل منظمة أكبر لاتخاذ القرارات أو جمع المعلومات.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Confusion",
+            ipa: "kun-FYOO-zhun  [/kənˈfjuːʒən/]",
+            arPron: "كُـنْـ - فْـيُـو - جَـن",
+            ar: "التشوش الذهني",
+            def: "انخفاض القدرة الإدراكية والعقلية مما يؤثر في القدرة على التفكير والتعلم والفهم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Congestive Heart Failure (CHF)",
+            ipa: "kun-JES-tiv hart FAYL-yer  [/kənˈdʒɛstɪv hɑːrt ˈfeɪljər/]",
+            arPron: "كُـنْـ - جِـسْـ - تِـف  هَـارْت  فَـيْـلْـ - يَـر",
+            ar: "فشل القلب الاحتقاني",
+            def: "ضعف قوة انقباض عضلة القلب مما يؤدي إلى تراكم السوائل في الرئتين والأطراف.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Constipation",
+            ipa: "kon-stih-PAY-shun  [/ˌkɒnstɪˈpeɪʃən/]",
+            arPron: "كُـونْـ - سْـتِـ - بِـيْـ - شَـن",
+            ar: "الإمساك",
+            def: "حدوث أقل من ثلاث مرات للتبرز أسبوعيًا مع براز صلب أو جاف أو متكتل.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Contact Time",
+            ipa: "KON-takt tym  [/ˈkɒntækt taɪm/]",
+            arPron: "كُـونْـ - تَـاكْـت  تَـايْـمْ",
+            ar: "زمن التلامس",
+            def: "المدة الزمنية التي يجب أن يبقى فيها المطهر ملامسًا للسطح أو الأداة لضمان التطهير الفعال.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Continuous Improvement",
+            ipa: "kun-TIN-yoo-us im-PROOV-munt  [/kənˈtɪnjuəs ɪmˈpruːvmənt/]",
+            arPron: "كُـنْـ - تِـنْـ - يُـو - وَس  إِمْـ - بْـرُوفْـ - مِـنْـت",
+            ar: "التحسين المستمر",
+            def: "جهود متواصلة لتطوير العمليات والخدمات الصحية ورفع مستوى الجودة والسلامة.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Controlling",
+            ipa: "kun-TROH-ling  [/kənˈtroʊlɪŋ/]",
+            arPron: "كُـنْـ - تْـرُو - لِـنْـج",
+            ar: "الرقابة / التحكم",
+            def: "متابعة الأداء وضبط السلوك والعمليات للتأكد من سير العمل وفق الخطط الموضوعة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Cooperation",
+            ipa: "koh-op-uh-RAY-shun  [/koʊˌɒpəˈreɪʃən/]",
+            arPron: "كُـو - أُو - بَـ - رَيْـ - شَـن",
+            ar: "التعاون",
+            def: "العمل المشترك مع الآخرين لتحقيق أهداف العمل.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Coordination",
+            ipa: "koh-or-dih-NAY-shun  [/koʊˌɔːrdɪˈneɪʃən/]",
+            arPron: "كُـو - أُورْ - دِيـ - نَيْـ - شَـن",
+            ar: "التنسيق",
+            def: "تنظيم جهود جميع الأشخاص المشاركين في خطة أو نشاط ليعملوا بانسجام.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Corrective Actions",
+            ipa: "kuh-REK-tiv AK-shunz  [/kəˈrɛktɪv ˈækʃənz/]",
+            arPron: "كَـ - رِكْـ - تِـف  أَكْـ - شَـنْـز",
+            ar: "الإجراءات التصحيحية",
+            def: "خطوات تُتخذ لإزالة أسباب عدم المطابقة أو الأخطاء ومنع تكرارها مستقبلاً.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Cough",
+            ipa: "KOF  [/kɒf/]",
+            arPron: "كُـوف",
+            ar: "السعال (الكحة)",
+            def: "إخراج الهواء بقوة من الرئتين عبر الحلق مع إصدار صوت قصير ومرتفع.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Critical Items",
+            ipa: "KRIT-ih-kul EYE-tumz  [/ˈkrɪtɪkəl ˈaɪtəmz/]",
+            arPron: "كْـرِيـ - تِـيـ - كَـل  آيْـ - تِـمْـز",
+            ar: "الأدوات الحرجة",
+            def: "أدوات طبية تخترق أنسجة الجسم المعقمة أو مجرى الدم وتتطلب التعقيم الكامل.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "CT Scan (Computed Tomography)",
+            ipa: "SEE-TEE skan  [/ˌsiːˈtiː skæn/]",
+            arPron: "سِـي - تِـي  سْـكَـان",
+            ar: "التصوير المقطعي المحوسب",
+            def: "تقنية تصوير تشخيصي بالأشعة السينية تنتج صورًا مقطعية مفصلة للجسم.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Cyanosis",
+            ipa: "sy-uh-NOH-sis  [/ˌsaɪəˈnoʊsɪs/]",
+            arPron: "سَـا - يَـا - نُـو - سِـس",
+            ar: "الزرقة",
+            def: "تحول لون الجلد أو الشفتين أو الأظافر إلى اللون الأزرق بسبب نقص الأكسجين.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Cysto- (Prefix)",
+            ipa: "SIS-toh  [/ˈsɪstoʊ/]",
+            arPron: "سِـسْـ - تُـو",
+            ar: "بادئة: متعلق بالمثانة",
+            def: "مقطع يُضاف في بداية الكلمة الطبية ليدل على ارتباطها بالمثانة البولية.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+
+        // D
+        {
+            en: "Decontamination",
+            ipa: "dee-kun-tam-ih-NAY-shun  [/ˌdiːkənˌtæmɪˈneɪʃən/]",
+            arPron: "دِي - كُـونْـ - تَـا - مِـيـ - نَيْـ - شَـن",
+            ar: "إزالة التلوث",
+            def: "عملية تنظيف وتطهير الأدوات والأسطح لإزالة الميكروبات وجعلها آمنة للتعامل.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Delegation",
+            ipa: "del-ih-GAY-shun  [/ˌdɛlɪˈɡeɪʃən/]",
+            arPron: "دِيـ - لِـيـ - جَيْـ - شَـن",
+            ar: "التفويض",
+            def: "منح شخص صلاحية التصرف واتخاذ القرار نيابة عن شخص آخر.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Dementia",
+            ipa: "dih-MEN-shuh  [/dɪˈmɛnʃə/]",
+            arPron: "دِيـ - مِـنْـ - شِـيَـا",
+            ar: "الخرف",
+            def: "مجموعة أعراض تنتج عن تلف الدماغ وتؤثر في الذاكرة والتفكير والسلوك.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Dentist",
+            ipa: "DEN-tist  [/ˈdɛntɪst/]",
+            arPron: "دِيـنْـ - تِـسْـت",
+            ar: "طبيب الأسنان",
+            def: "ممارس صحي متخصص في تشخيص وعلاج أمراض الفم والأسنان.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Department",
+            ipa: "dih-PART-munt  [/dɪˈpɑːrtmənt/]",
+            arPron: "دِيـ - بَـارْتْـ - مِـنْـت",
+            ar: "القسم",
+            def: "تقسيم وظيفي أو تخصصي داخل المستشفى أو المنظمة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Diagnosis",
+            ipa: "dy-ug-NOH-sis  [/ˌdaɪəɡˈnoʊsɪs/]",
+            arPron: "دَايْـ - جْـ - نُـو - سِـس",
+            ar: "التشخيص",
+            def: "تحديد طبيعة المرض أو الحالة الصحية بناءً على الأعراض والفحوصات.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Diarrhea",
+            ipa: "dy-uh-REE-uh  [/ˌdaɪəˈriːə/]",
+            arPron: "دَايَـ - رِيَـا",
+            ar: "الإسهال",
+            def: "خروج براز رخو أو مائي ثلاث مرات أو أكثر في اليوم الواحد.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Directing",
+            ipa: "dy-REK-ting  [/daɪˈrɛktɪŋ/]",
+            arPron: "دَايْـ - رِكْـ - تِـنْـج",
+            ar: "التوجيه",
+            def: "إرشاد العاملين وتوجيههم نحو المسار الصحيح لتنفيذ المهام.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Dirty Utility Room",
+            ipa: "DUR-tee yoo-TIL-ih-tee room  [/ˈdɜːrti juːˈtɪlɪti ruːm/]",
+            arPron: "دِيرْ - تِـي  يُـو - تِـيـ - لِـيـ - تِـي  رُومْ",
+            ar: "غرفة الخدمات المتسخة",
+            def: "غرفة معزولة ومهواة مخصصة للتخلص الآمن من السوائل الملوثة وتنظيف الأدوات المتسخة.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Disinfectant",
+            ipa: "dis-in-FEK-tunt  [/ˌdɪsɪnˈfɛktənt/]",
+            arPron: "دِسْ - إِنْـ - فِـكْـ - تَـنْـت",
+            ar: "المطهر (للأسطح والأدوات)",
+            def: "مادة كيميائية أو فيزيائية تُستخدم على الأسطح والأدوات غير الحية لتدمير مسببات الأمراض.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Disinfection",
+            ipa: "dis-in-FEK-shun  [/ˌdɪsɪnˈfɛkʃən/]",
+            arPron: "دِسْ - إِنْـ - فِـكْـ - شَـن",
+            ar: "التطهير",
+            def: "القضاء الحراري أو الكيميائي على معظم الكائنات الدقيقة الممرضة باستثناء بعض الأبواغ البكتيرية.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Dizziness",
+            ipa: "DIZ-ee-nus  [/ˈdɪzinəs/]",
+            arPron: "دِيـ - زِيـ - نِـس",
+            ar: "الدوخة (الدوار)",
+            def: "فقدان التوازن أو الشعور بعدم الثبات.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Dyspnea",
+            ipa: "disp-NEE-uh  [/dɪspˈniːə/]",
+            arPron: "دِسْـ - بْـنِـيَـا",
+            ar: "ضيق التنفس",
+            def: "الشعور بصعوبة التنفس وعدم القدرة على إدخال كمية كافية من الهواء إلى الرئتين.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Dysuria",
+            ipa: "dis-YOOR-ee-uh  [/dɪsˈjʊəriə/]",
+            arPron: "دِسْ - يُـورْ - يَـا",
+            ar: "عسر التبول",
+            def: "الشعور بالألم أو الصعوبة أو الحرقة أثناء التبول.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+
+        // E
+        {
+            en: "Ecchymosis",
+            ipa: "ek-ih-MOH-sis  [/ˌɛkɪˈmoʊsɪs/]",
+            arPron: "إِكِـيـ - مُـو - سِـس",
+            ar: "الكدمات",
+            def: "المصطلح الطبي لتغير لون الجلد الناتج عن نزيف تحت الجلد (الكدمة).",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Echocardiogram",
+            ipa: "ek-oh-KAR-dee-oh-gram  [/ˌɛkoʊˈkɑːrdioʊɡræm/]",
+            arPron: "إِيـ - كُـو - كَـارْ - دِيُـو - جْـرَامْ",
+            ar: "تخطيط صدى القلب (الإيكو)",
+            def: "فحص بالموجات فوق الصوتية لتصوير القلب وتقييم وظائفه وصماماته.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "-ectomy (Suffix)",
+            ipa: "EK-tuh-mee  [/ˈɛktəmi/]",
+            arPron: "إِكْـ - تُـو - مِـي",
+            ar: "لاحقة: الاستئصال الجراحي",
+            def: "مقطع يُضاف في نهاية المصطلح الطبي ويعني الإزالة الجراحية لعضو أو نسيج.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Edema",
+            ipa: "ih-DEE-muh  [/ɪˈdiːmə/]",
+            arPron: "إِ - دِيـ - مَـا",
+            ar: "الوذمة (التورم)",
+            def: "تورم ناتج عن احتباس وتجمع سوائل زائدة داخل أنسجة الجسم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Effectiveness",
+            ipa: "ih-FEK-tiv-nus  [/ɪˈfɛktɪvnəs/]",
+            arPron: "إِ - فِـكْـ - تِـفْـ - نِـس",
+            ar: "الفعالية",
+            def: "تقديم الرعاية الصحية المبنية على الأدلة العلمية لمن يستفيد منها وتحقيق النتائج المرجوة.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Efficiency",
+            ipa: "ih-FISH-un-see  [/ɪˈfɪʃənsi/]",
+            arPron: "إِ - فِـيـ - شَـنْـ - سِـي",
+            ar: "الكفاءة",
+            def: "تجنب الهدر في المعدات والإمدادات والأفكار والطاقة أثناء تقديم الرعاية الصحية.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Emergency Department (ED)",
+            ipa: "ih-MUR-jun-see dih-PART-munt  [/ɪˈmɜːrdʒənsi dɪˈpɑːrtmənt/]",
+            arPron: "إِ - مِـيرْ - جَـنْـ - سِـي  دِيـ - بَـارْتْـ - مِـنْـت",
+            ar: "قسم الطوارئ",
+            def: "خط الدفاع الأول في المستشفى لعلاج الحالات الطارئة والمهددة للحياة وفرز المرضى.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Employee",
+            ipa: "em-ploy-EE  [/ɪmˈplɔɪiː/]",
+            arPron: "إِمْـ - بْـلُـويِـي",
+            ar: "الموظف",
+            def: "شخص يتقاضى أجرًا مقابل العمل لدى جهة أو صاحب عمل.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Employer",
+            ipa: "em-PLOY-er  [/ɪmˈplɔɪər/]",
+            arPron: "إِمْـ - بْـلُـو - يَـر",
+            ar: "صاحب العمل / جهة التوظيف",
+            def: "الشخص أو المؤسسة التي تقوم بتوظيف العاملين ودفع أجورهم.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Endoscopic Devices",
+            ipa: "en-doh-SKOP-ik dih-VY-siz  [/ˌɛndəˈskɒpɪk dɪˈvaɪsɪz/]",
+            arPron: "إِنْـ - دُو - سْـكُـو - بِـك  دِيـ - فَـايْـ - سِـز",
+            ar: "أجهزة المناظير",
+            def: "أدوات طبية مزودة بكاميرا لفحص تجاويف الجسم الداخلية وتتطلب تعقيمًا وتطهيرًا دقيقًا.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Environmental Hygiene",
+            ipa: "en-vy-run-MEN-tul HY-jeen  [/ɪnˌvaɪrənˈmɛntəl ˈhaɪdʒiːn/]",
+            arPron: "إِنْـ - فَـايْـ - رُو - مِـنْـ - تَـل  هَـايْـ - جِـين",
+            ar: "النظافة البيئية",
+            def: "إجراءات تنظيف وتطهير بيئة المستشفى والأسطح للحد من انتقال العدوى.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Epilepsy",
+            ipa: "EP-ih-lep-see  [/ˈɛpɪlɛpsi/]",
+            arPron: "إِ - بِـيـ - لِـبْـ - سِـي",
+            ar: "الصرع",
+            def: "حالة عصبية مزمنة تسبب نوبات تشنجية متكررة نتيجة نشاط كهربائي غير طبيعي في الدماغ.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Equity",
+            ipa: "EK-wih-tee  [/ˈɛkwɪti/]",
+            arPron: "إِكْـ - وِيـ - تِـي",
+            ar: "العدالة / الإنصاف",
+            def: "تقديم رعاية صحية متساوية في الجودة لا تختلف بسبب الجنس أو العرق أو الوضع الاجتماعي.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Evaluation",
+            ipa: "ih-val-yoo-AY-shun  [/ɪˌvæljuˈeɪʃən/]",
+            arPron: "إِيـ - فَـالْـ - يُـو - وَيْـ - شَـن",
+            ar: "التقييم",
+            def: "عملية الحكم على جودة شيء أو أهميته أو قيمته وقياس مدى تحقيق الأهداف.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+
+        // F
+        {
+            en: "Fainting (Syncope)",
+            ipa: "FAYN-ting / SING-kuh-pee  [/ˈfeɪntɪŋ / ˈsɪŋkəpi/]",
+            arPron: "فَـيْـنْـ - تِـنْـج  /  سِـنْـ - كُـو - بِـي",
+            ar: "الإغماء (الغشيان)",
+            def: "فقدان مفاجئ ومؤقت للوعي بسبب نقص تدفق الدم إلى الدماغ.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Fatigue",
+            ipa: "fuh-TEEG  [/fəˈtiːɡ/]",
+            arPron: "فَـ - تِـيـج",
+            ar: "الإرهاق / التعب الشديد",
+            def: "شعور ذاتي بالتعب الشديد ونقص الطاقة.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Feedback",
+            ipa: "FEED-bak  [/ˈfiːdbæk/]",
+            arPron: "فِـيـد - بَـاك",
+            ar: "التغذية الراجعة",
+            def: "معلومات أو آراء حول الأداء أو الخدمة تساعد في تحسين الجودة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Financial Management",
+            ipa: "fy-NAN-shul MAN-ij-munt  [/faɪˈnænʃəl ˈmænɪdʒmənt/]",
+            arPron: "فَـايْـ - نَـانْـ - شَـل  مَـانِـجْـ - مِـنْـت",
+            ar: "الإدارة المالية",
+            def: "تخطيط وتنظيم ومراقبة الموارد المالية في المؤسسة الصحية.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Flu (Influenza)",
+            ipa: "FLOO / in-floo-EN-zuh  [/fluː / ˌɪnfluˈɛnzə/]",
+            arPron: "فْـلُـو  /  إِنْـ - فْـلُـو - وَنْـ - زَا",
+            ar: "الإنفلونزا",
+            def: "عدوى تنفسية فيروسية تسببها فيروسات الإنفلونزا A و B ويمكن الوقاية منها باللقاح.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "FMEA (Failure Mode and Effects Analysis)",
+            ipa: "EF-EM-EE-AY  [/ˌɛfˌɛmˌiːˈeɪ/]",
+            arPron: "إِف - إِمْ - إِي - إِيـه",
+            ar: "تحليل أنماط الفشل وتأثيراتها",
+            def: "أداة استباقية في إدارة المخاطر لتحديد نقاط الضعف المحتملة قبل وقوع الضرر.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Fracture",
+            ipa: "FRAK-cher  [/ˈfræktʃər/]",
+            arPron: "فْـرَاكْـ - تْـشَـر",
+            ar: "الكسر",
+            def: "انقطاع جزئي أو كامل في استمرارية العظم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+
+        // G
+        {
+            en: "Gallstones",
+            ipa: "GAWL-stohnz  [/ˈɡɔːlstoʊnz/]",
+            arPron: "جُـول - سْـتُـونْـز",
+            ar: "حصوات المرارة",
+            def: "ترسبات صلبة من السوائل الهضمية تتكون داخل المرارة.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Gastr- (Prefix)",
+            ipa: "GASTR  [/ˈɡæstr/]",
+            arPron: "جَـاسْـ - تَـر",
+            ar: "بادئة: متعلق بالمعدة",
+            def: "مقطع يُضاف في بداية المصطلح الطبي ليدل على ارتباطه بالمعدة.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Gastritis",
+            ipa: "gas-TRY-tis  [/ɡæˈstraɪtɪs/]",
+            arPron: "جَـاسْـ - تْـرَايْـ - تِـس",
+            ar: "التهاب المعدة",
+            def: "التهاب يصيب البطانة الداخلية للمعدة.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Gastroenteritis",
+            ipa: "gas-troh-en-ter-EYE-tis  [/ˌɡæstroʊˌɛntəˈraɪtɪs/]",
+            arPron: "جَـاسْـ - تْـرُو - إِنْـ - تَـ - رَايْـ - تِـس",
+            ar: "التهاب المعدة والأمعاء",
+            def: "التهاب يمتد من المعدة إلى الأمعاء.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Gastroesophageal Reflux Disease (GERD)",
+            ipa: "gas-troh-ih-sof-uh-JEE-ul REE-fluks dih-ZEEZ  [/ˌɡæstroʊɪˌsɒfəˈdʒiːəl ˈriːflʌks dɪˈziːz/]",
+            arPron: "جَـاسْـ - تْـرُو - إِيـ - سُـو - فَـ - جِـيَـل  رِيـ - فْـلَـكْـس  دِيـ - زِيـز",
+            ar: "مرض الارتجاع المعدي المريئي",
+            def: "ارتداد حمض المعدة إلى المريء مما يسبب حرقة المعدة.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Gastrointestinal (GI) Tract",
+            ipa: "gas-troh-in-TES-tih-nul trakt  [/ˌɡæstroʊɪnˈtɛstɪnəl trækt/]",
+            arPron: "جَـاسْـ - تْـرُو - إِنْـ - تِـسْـ - تِـيـ - نَـل  تْـرَاكْـت",
+            ar: "الجهاز الهضمي",
+            def: "القناة الهضمية المسؤولة عن هضم الطعام وامتصاص العناصر الغذائية.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Goal",
+            ipa: "GOHL  [/ɡoʊl/]",
+            arPron: "جُـول",
+            ar: "الهدف",
+            def: "تحديد واضح لما تسعى المنظمة أو الفرد إلى تحقيقه.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+
+        // H
+        {
+            en: "Hazard",
+            ipa: "HAZ-erd  [/ˈhæzərd/]",
+            arPron: "هَـا - زَرْد",
+            ar: "الخطر / مصدر الخطر",
+            def: "أي ظرف أو عامل يمتلك القدرة على التسبب في ضرر أو إصابة.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Headache",
+            ipa: "HED-ayk  [/ˈhɛdeɪk/]",
+            arPron: "هِـيـد - إِيـك",
+            ar: "الصداع",
+            def: "ألم في الرأس أو الوجه.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Health Insurance",
+            ipa: "HELTH in-SHOOR-uns  [/hɛlθ ɪnˈʃʊərəns/]",
+            arPron: "هِـلْـث  إِنْـ - شُـو - رَنْـس",
+            ar: "التأمين الصحي",
+            def: "نظام تغطية تكاليف الرعاية الطبية والخدمات الصحية للمستفيدين.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Healthcare-Associated Infections (HAIs)",
+            ipa: "HELTH-kair uh-SOH-see-ay-tid in-FEK-shunz  [/ˈhɛlθkɛər əˈsoʊsieɪtɪd ɪnˈfɛkʃənz/]",
+            arPron: "هِـلْـث  كَـيْـر  أَسُـو - شِـيـ - يَيْـ - تِـد  إِنْـ - فِـكْـ - شَـنْـز",
+            ar: "العدوى المرتبطة بالرعاية الصحية",
+            def: "عدوى يكتسبها المريض أثناء تلقيه الرعاية داخل المنشأة الصحية.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Heart Attack (Myocardial Infarction)",
+            ipa: "HART uh-TAK / my-oh-KAR-dee-ul in-FARK-shun  [/hɑːrt əˈtæk / ˌmaɪoʊˈkɑːrdiəl ɪnˈfɑːrkʃən/]",
+            arPron: "هَـارْت  أَتَـاك  /  مَـايُـو - كَـارْ - دِيَـل  إِنْـ - فَـارْكْـ - شَـن",
+            ar: "النوبة القلبية (احتشاء عضلة القلب)",
+            def: "انخفاض مفاجئ في تدفق الدم إلى القلب يؤدي إلى تلف عضلة القلب.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Hematemesis",
+            ipa: "hee-muh-TEM-ih-sis  [/ˌhiːməˈtɛmɪsɪs/]",
+            arPron: "هِـيـ - مَـا - تِـيـ - مِـ - سِـس",
+            ar: "القيء الدموي",
+            def: "تقيؤ الدم الناتج عن نزيف في الجهاز الهضمي العلوي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hematuria",
+            ipa: "hee-muh-TYOOR-ee-uh  [/ˌhiːməˈtjʊəriə/]",
+            arPron: "هِـيـ - مَـا - تُـورْ - يَـا",
+            ar: "البيلة الدموية",
+            def: "وجود دم في البول.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hemodialysis Devices",
+            ipa: "hee-moh-dy-AL-ih-sis dih-VY-siz  [/ˌhiːmoʊdaɪˈælɪsɪs dɪˈvaɪsɪz/]",
+            arPron: "هِـيـ - مُـو - دَايَـا - لِـيـ - سِـس  دِيـ - فَـايْـ - سِـز",
+            ar: "أجهزة الغسيل الكلوي",
+            def: "أجهزة طبية لتنقية الدم لدى مرضى الفشل الكلوي وتتطلب بروتوكولات تطهير صارمة.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Hemoptysis",
+            ipa: "hih-MOP-tih-sis  [/hɪˈmɒptɪsɪs/]",
+            arPron: "هِـيـ - مُـوبْـ - تِـ - سِـس",
+            ar: "نفث الدم",
+            def: "خروج الدم مع السعال من الجهاز التنفسي السفلي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hemorrhage",
+            ipa: "HEM-uh-rij  [/ˈhɛmərɪdʒ/]",
+            arPron: "هِـيـ - مُـو - رِج",
+            ar: "النزيف",
+            def: "خروج الدم من وعاء دموي متضرر.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hemorrhoids",
+            ipa: "HEM-uh-roydz  [/ˈhɛmərɔɪdz/]",
+            arPron: "هِـيـ - مُـو - رُويْـدْز",
+            ar: "البواسير",
+            def: "أوردة متورمة وملتهبة في فتحة الشرج أو المستقيم.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Hepat- (Prefix)",
+            ipa: "HEP-at  [/ˈhɛpæt/]",
+            arPron: "هِـيـ - بَـات",
+            ar: "بادئة: متعلق بالكبد",
+            def: "مقطع يُضاف في بداية المصطلح الطبي ليدل على ارتباطه بالكبد.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Hepatomegaly",
+            ipa: "hep-uh-toh-MEG-uh-lee  [/ˌhɛpətoʊˈmɛɡəli/]",
+            arPron: "هِـيـ - بَـا - تُـو - مِـيـ - جَـ - لِـي",
+            ar: "تضخم الكبد",
+            def: "زيادة غير طبيعية في حجم الكبد، ويُعد علامة لمرض كامن.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "High-Level Disinfection (HLD)",
+            ipa: "HY LEV-ul dis-in-FEK-shun  [/haɪ ˈlɛvəl ˌdɪsɪnˈfɛkʃən/]",
+            arPron: "هَـاي  لِـيـ - فَـل  دِسْ - إِنْـ - فِـكْـ - شَـن",
+            ar: "التطهير عالي المستوى",
+            def: "عملية تقضي على جميع الكائنات الدقيقة باستثناء أعداد كبيرة من الأبواغ البكتيرية، وتُستخدم للأدوات شبه الحرجة.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Human Resources (HR)",
+            ipa: "HYOO-mun rih-SOR-siz  [/ˈhjuːmən rɪˈsɔːrsɪz/]",
+            arPron: "هْـيُـو - مَـن  رِيـ - سُـورْ - سِـز",
+            ar: "الموارد البشرية",
+            def: "القوى العاملة في المنظمة، والإدارة المسؤولة عن شؤون الموظفين والتوظيف.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Hyperglycemia",
+            ipa: "hy-per-gly-SEE-mee-uh  [/ˌhaɪpərɡlaɪˈsiːmiə/]",
+            arPron: "هَـايْـ - بَـرْ - غْـلَايْـ - سِـيـ - مِـيَـا",
+            ar: "ارتفاع سكر الدم",
+            def: "ارتفاع مستوى السكر (الجلوكوز) في الدم فوق المعدل الطبيعي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hypertension",
+            ipa: "hy-per-TEN-shun  [/ˌhaɪpərˈtɛnʃən/]",
+            arPron: "هَـايْـ - بَـرْ - تِـنْـ - شَـن",
+            ar: "ارتفاع ضغط الدم",
+            def: "ارتفاع ضغط الدم داخل الأوعية الدموية لأكثر من 140/90 ملم زئبق.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hyperthermia",
+            ipa: "hy-per-THUR-mee-uh  [/ˌhaɪpərˈθɜːrmiə/]",
+            arPron: "هَـايْـ - بَـرْ - ثِـيرْ - مِـيَـا",
+            ar: "ارتفاع حرارة الجسم",
+            def: "ارتفاع درجة حرارة الجسم بشكل غير طبيعي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hypoglycemia",
+            ipa: "hy-poh-gly-SEE-mee-uh  [/ˌhaɪpoʊɡlaɪˈsiːmiə/]",
+            arPron: "هَـايْـ - بُـو - غْـلَايْـ - سِـيـ - مِـيَـا",
+            ar: "انخفاض سكر الدم",
+            def: "انخفاض مستوى سكر الدم (الجلوكوز) عن المعدل الطبيعي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hypotension",
+            ipa: "hy-poh-TEN-shun  [/ˌhaɪpoʊˈtɛnʃən/]",
+            arPron: "هَـايْـ - بُـو - تِـنْـ - شَـن",
+            ar: "انخفاض ضغط الدم",
+            def: "انخفاض قوة دفع الدم على جدران الشرايين لأقل من 90/60 ملم زئبق.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hypothermia",
+            ipa: "hy-poh-THUR-mee-uh  [/ˌhaɪpoʊˈθɜːrmiə/]",
+            arPron: "هَـايْـ - بُـو - ثِـيرْ - مِـيَـا",
+            ar: "انخفاض حرارة الجسم",
+            def: "انخفاض غير طبيعي في درجة حرارة الجسم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Hyster- (Prefix)",
+            ipa: "HIS-ter  [/ˈhɪstər/]",
+            arPron: "هِـسْـ - تَـر",
+            ar: "بادئة: متعلق بالرحم",
+            def: "مقطع يُضاف في بداية المصطلح الطبي ليدل على ارتباطه بالرحم.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+
+        // I
+        {
+            en: "Incident Reporting",
+            ipa: "IN-sih-dunt rih-POR-ting  [/ˈɪnsɪdənt rɪˈpɔːrtɪŋ/]",
+            arPron: "إِنْـ - سِـيـ - دِنْـت  رِيـ - بُـورْ - تِـنْـج",
+            ar: "الإبلاغ عن الحوادث",
+            def: "نظام لتوثيق المخاطر والأحداث الوشيكة والأحداث الضارة بغرض التعلم وتحسين النظام وليس اللوم.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Incision",
+            ipa: "in-SIZH-un  [/ɪnˈsɪʒən/]",
+            arPron: "إِنْـ - سِـيـ - جَـن",
+            ar: "الشق الجراحي",
+            def: "جرح يُحدث عمدًا أثناء العمليات الجراحية للوصول إلى الأنسجة الداخلية.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Infection Prevention and Control (IPC)",
+            ipa: "in-FEK-shun prih-VEN-shun and kun-TROHL  [/ɪnˈfɛkʃən prɪˈvɛnʃən ənd kənˈtroʊl/]",
+            arPron: "إِنْـ - فِـكْـ - شَـن  بْـرِيـ - فِـنْـ - شَـن  أَنْـد  كُـنْـ - تْـرُول",
+            ar: "الوقاية من العدوى ومكافحتها",
+            def: "مجموعة السياسات والإجراءات الهادفة لمنع انتشار العدوى داخل المنشآت الصحية.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Intensive Care Unit (ICU)",
+            ipa: "in-TEN-siv kair YOO-nit  [/ɪnˈtɛnsɪv kɛər ˈjuːnɪt/]",
+            arPron: "إِنْـ - تِـنْـ - سِـف  كَـيْـر  يُـو - نِـت",
+            ar: "وحدة العناية المركزة",
+            def: "قسم يعالج المرضى ذوي الحالات الحرجة الذين يحتاجون إلى مراقبة دقيقة ودعم متقدم للحياة.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+
+        // K
+        {
+            en: "Key Performance Indicator (KPI)",
+            ipa: "KEE per-FOR-muns IN-dih-kay-ter  [/kiː pərˈfɔːrməns ˈɪndɪkeɪtər/]",
+            arPron: "كِـي  بِـيرْ - فُـورْ - مَـنْـس  إِنْـ - دِيـ - كَيْـ - تَـر",
+            ar: "مؤشر الأداء الرئيسي",
+            def: "متغير قابل للقياس يُستخدم لمراقبة جودة وسلامة وكفاءة الرعاية الصحية.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+
+        // L
+        {
+            en: "Labor and Delivery (L&D)",
+            ipa: "LAY-ber and dih-LIV-er-ee  [/ˈleɪbər ənd dɪˈlɪvəri/]",
+            arPron: "لَـيْـ - بَـر  أَنْـد  دِيـ - لِـيـ - فَـ - رِي",
+            ar: "قسم المخاض والولادة",
+            def: "قسم متخصص في رعاية الأمومة والولادة الطبيعية والقيصرية ومتابعة ما بعد الولادة.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Laboratory Services",
+            ipa: "LAB-ruh-tor-ee SUR-vih-siz  [/ˈlæbrətɔːri ˈsɜːrvɪsɪz/]",
+            arPron: "لَا - بُـو - رَا - تُـو - رِي  سِـيرْ - فِـ - سِـز",
+            ar: "خدمات المختبر",
+            def: "قسم تحليل عينات الدم والبول والأنسجة لتشخيص الأمراض ومراقبة وظائف الأعضاء.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Liver Cirrhosis",
+            ipa: "LIV-er sih-ROH-sis  [/ˈlɪvər sɪˈroʊsɪs/]",
+            arPron: "لِـيـ - فَـر  سِـيـ - رُو - سِـس",
+            ar: "تشمع (تليف) الكبد",
+            def: "تندب دائم في أنسجة الكبد يضر بوظائفه الحيوية.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Low-Level Disinfection (LLD)",
+            ipa: "LOH LEV-ul dis-in-FEK-shun  [/loʊ ˈlɛvəl ˌdɪsɪnˈfɛkʃən/]",
+            arPron: "لُـو  لِـيـ - فَـل  دِسْ - إِنْـ - فِـكْـ - شَـن",
+            ar: "التطهير منخفض المستوى",
+            def: "عملية تقضي على معظم البكتيريا وبعض الفيروسات والفطريات، وتُستخدم للأدوات غير الحرجة.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+
+        // M
+        {
+            en: "Mammo- / Masto- (Prefix)",
+            ipa: "MAM-oh / MAS-toh  [/ˈmæmoʊ / ˈmæstoʊ/]",
+            arPron: "مَـا - مُـو  /  مَـاسْـ - تُـو",
+            ar: "بادئة: متعلق بالثدي",
+            def: "مقاطع تُضاف في بداية المصطلح الطبي لتدل على ارتباطها بالثدي.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Management",
+            ipa: "MAN-ij-munt  [/ˈmænɪdʒmənt/]",
+            arPron: "مَـانِـجْـ - مِـنْـت",
+            ar: "الإدارة",
+            def: "عملية تنظيم وتوجيه الموارد والأفراد لتحقيق أهداف المنظمة بكفاءة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Manager",
+            ipa: "MAN-ij-er  [/ˈmænɪdʒər/]",
+            arPron: "مَـا - نِـ - جَـر",
+            ar: "المدير",
+            def: "الشخص المسؤول عن إدارة وتوجيه منظمة أو قسم معين.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Material Safety Data Sheet (MSDS)",
+            ipa: "muh-TEER-ee-ul SAYF-tee DAY-tuh sheet  [/məˈtɪəriəl ˈseɪfti ˈdeɪtə ʃiːt/]",
+            arPron: "مَـا - تِـيرْ - يَـل  سَـيْـفْـ - تِـي  دَاتَـا  شِـيـت",
+            ar: "نشرة بيانات سلامة المواد",
+            def: "وثيقة من الشركة المصنعة توضح مخاطر المادة الكيميائية وطرق استخدامها وتخزينها بأمان.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Medical-Surgical Unit (Med-Surg)",
+            ipa: "MED-ih-kul SUR-jih-kul YOO-nit  [/ˈmɛdɪkəl ˈsɜːrdʒɪkəl ˈjuːnɪt/]",
+            arPron: "مِـيـ - دِيـ - كَـل  سِـيرْ - جِـيـ - كَـل  يُـو - نِـت",
+            ar: "وحدة التنويم الباطني والجراحي",
+            def: "العمود الفقري للمستشفى لرعاية المرضى المستقرين الذين يحتاجون إلى تنويم وعلاج طبي أو ما بعد الجراحة.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Melena",
+            ipa: "muh-LEE-nuh  [/məˈliːnə/]",
+            arPron: "مِـيـ - لِـيـ - نَـا",
+            ar: "البراز الأسود القطراني (الميلينا)",
+            def: "براز أسود اللون يشبه القطران ينتج عن نزيف في الجزء العلوي من الجهاز الهضمي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Mission",
+            ipa: "MISH-un  [/ˈmɪʃən/]",
+            arPron: "مِـيـ - شَـن",
+            ar: "الرسالة (رسالة المنظمة)",
+            def: "الغرض الأساسي والهدف الجوهري الذي وُجدت من أجله المنظمة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Motivation",
+            ipa: "moh-tih-VAY-shun  [/ˌmoʊtɪˈveɪʃən/]",
+            arPron: "مُـو - تِـيـ - فَـيْـ - شَـن",
+            ar: "التحفيز",
+            def: "الحماس والدافعية للقيام بالعمل وإنجاز المهام.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "MRI (Magnetic Resonance Imaging)",
+            ipa: "EM-AR-EYE  [/ˌɛmˌɑːrˈaɪ/]",
+            arPron: "إِمْ - آر - آي",
+            ar: "التصوير بالرنين المغناطيسي",
+            def: "تقنية تصوير طبي تستخدم المجال المغناطيسي وموجات الراديو لإنتاج صور دقيقة للأعضاء.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Myo- (Prefix)",
+            ipa: "MY-oh  [/ˈmaɪoʊ/]",
+            arPron: "مَـايُـو",
+            ar: "بادئة: متعلق بالعضلات",
+            def: "مقطع يُضاف في بداية المصطلح الطبي ليدل على ارتباطه بالأنسجة العضلية.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+
+        // N
+        {
+            en: "Nausea",
+            ipa: "NAW-zee-uh  [/ˈnɔːziə/]",
+            arPron: "نُـوزْ - يَـا",
+            ar: "الغثيان",
+            def: "شعور بعدم الارتياح في المعدة مع النفور من الطعام والرغبة في التقيؤ.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Near Misses",
+            ipa: "NEER MIS-iz  [/nɪər ˈmɪsɪz/]",
+            arPron: "نِـير  مِـيـ - سِـز",
+            ar: "الأحداث الوشيكة (وشيكة الوقوع)",
+            def: "أحداث كادت أن تسبب ضررًا للمريض ولكن تم تداركها قبل وقوع الضرر، وتكشف نقاط ضعف النظام.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Negotiation",
+            ipa: "nih-goh-shee-AY-shun  [/nɪˌɡoʊʃiˈeɪʃən/]",
+            arPron: "نِـيـ - جُـو - شِـيـ - يَيْـ - شَـن",
+            ar: "التفاوض",
+            def: "عملية مناقشة موضوع مع طرف آخر بهدف التوصل إلى اتفاق مشترك.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Neonatal Intensive Care Unit (NICU)",
+            ipa: "nee-oh-NAY-tul in-TEN-siv kair YOO-nit  [/ˌniːoʊˈneɪtəl ɪnˈtɛnsɪv kɛər ˈjuːnɪt/]",
+            arPron: "نِـيُـو - نَيْـ - تَـل  إِنْـ - تِـنْـ - سِـف  كَـيْـر  يُـو - نِـت",
+            ar: "وحدة العناية المركزة لحديثي الولادة",
+            def: "قسم مخصص لرعاية الأطفال الخدج وحديثي الولادة ذوي الحالات الحرجة.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Nephro- (Prefix)",
+            ipa: "NEF-roh  [/ˈnɛfroʊ/]",
+            arPron: "نِـيـ - فْـرُو",
+            ar: "بادئة: متعلق بالكلية",
+            def: "مقطع يُضاف في بداية المصطلح الطبي ليدل على ارتباطه بالكلى.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Neurological System",
+            ipa: "nyoor-uh-LOJ-ih-kul SIS-tum  [/ˌnjʊərəˈlɒdʒɪkəl ˈsɪstəm/]",
+            arPron: "نْـيُـو - رُو - لُـو - جِـيـ - كَـل  سِـسْـ - تِـمْ",
+            ar: "الجهاز العصبي",
+            def: "الجهاز المسؤول عن التحكم في وظائف الجسم والحركة والإحساس والوعي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Nocturia",
+            ipa: "nok-TYOOR-ee-uh  [/nɒkˈtjʊəriə/]",
+            arPron: "نُـوكْـ - تْـيُـورْ - يَـا",
+            ar: "التبول الليلي",
+            def: "الاستيقاظ المتكرر أثناء الليل أكثر من مرة للتبول.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Non-Critical Items",
+            ipa: "NON KRIT-ih-kul EYE-tumz  [/nɒn ˈkrɪtɪkəl ˈaɪtəmz/]",
+            arPron: "نُـون  كْـرِيـ - تِـيـ - كَـل  آيْـ - تِـمْـز",
+            ar: "الأدوات غير الحرجة",
+            def: "أدوات تلامس الجلد السليم فقط ولا تلامس الأغشية المخاطية، وتتطلب تطهيرًا منخفض المستوى.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Numbness (Paraesthesia)",
+            ipa: "NUM-nus / par-is-THEE-zhuh  [/ˈnʌmnəs / ˌpærɪsˈθiːʒə/]",
+            arPron: "نَـامْـ - نِـس  /  بَـا - رِسْـ - ثِـيـ - جْـيَـا",
+            ar: "التنميل / الخدر",
+            def: "فقدان جزئي أو كلي للإحساس في جزء من الجسم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Nurse",
+            ipa: "NURS  [/nɜːrs/]",
+            arPron: "نِـيرْس",
+            ar: "الممرض / الممرضة",
+            def: "ممارس صحي متخصص في رعاية المرضى والمصابين ومتابعة حالتهم الصحية.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+
+        // O
+        {
+            en: "Occupational Therapy",
+            ipa: "ok-yoo-PAY-shuh-nul THER-uh-pee  [/ˌɒkjʊˈpeɪʃənəl ˈθɛrəpi/]",
+            arPron: "أُوكْـ - يُـو - بَيْـ - شَـ - نَـل  ثِـيـ - رَا - بِـي",
+            ar: "العلاج الوظيفي",
+            def: "علاج تأهيلي يساعد المرضى على استعادة مهارات الحياة اليومية والاعتماد على النفس.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Oncology",
+            ipa: "ong-KOL-uh-jee  [/ɒŋˈkɒlədʒi/]",
+            arPron: "أُونْـ - كُـو - لُـو - جِـي",
+            ar: "قسم الأورام",
+            def: "القسم الطبي المتخصص في تشخيص وعلاج مرض السرطان.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Operating Room (OR)",
+            ipa: "OP-uh-ray-ting room  [/ˈɒpəreɪtɪŋ ruːm/]",
+            arPron: "أُو - بِـيـ - رَيْـ - تِـنْـج  رُومْ",
+            ar: "غرفة العمليات",
+            def: "بيئة معقمة ومجهزة لإجراء العمليات الجراحية.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Organizational Structure",
+            ipa: "or-guh-ny-ZAY-shuh-nul STRUK-cher  [/ˌɔːrɡənaɪˈzeɪʃənəl ˈstrʌktʃər/]",
+            arPron: "أُورْ - جَـ - نَـايْـ - زَيْـ - شَـ - نَـل  سْـتْـرَكْـ - تْـشَـر",
+            ar: "الهيكل التنظيمي",
+            def: "الإطار الذي يحدد كيفية توزيع الأدوار والمسؤوليات وتنسيق العمل لتحقيق أهداف المنظمة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Organizing",
+            ipa: "OR-guh-ny-zing  [/ˈɔːrɡənaɪzɪŋ/]",
+            arPron: "أُورْ - جَـ - نَـايْـ - زِنْـج",
+            ar: "التنظيم",
+            def: "ترتيب العناصر والموارد البشرية والمادية في كيان متكامل ومترابط.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Orthopnea",
+            ipa: "or-THOP-nee-uh  [/ɔːrˈθɒpniə/]",
+            arPron: "أُورْ - ثُـو - بْـنِـيَـا",
+            ar: "ضيق التنفس الاضطجاعي (عند الاستلقاء)",
+            def: "ضيق في التنفس يحدث عند الاستلقاء على الظهر ويخف عند الجلوس أو الوقوف.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "-oscopy (Suffix)",
+            ipa: "OS-kuh-pee  [/ˈɒskəpi/]",
+            arPron: "أُوسْـ - كُـو - بِـي",
+            ar: "لاحقة: الفحص بالمنظار",
+            def: "مقطع يُضاف في نهاية المصطلح الطبي ويعني الرؤية أو الفحص البصري باستخدام منظار.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+
+        // P
+        {
+            en: "Palliative Care",
+            ipa: "PAL-ee-uh-tiv kair  [/ˈpæliətɪv kɛər/]",
+            arPron: "بَـالْـ - يَـا - تِـف  كَـيْـر",
+            ar: "الرعاية التلطيفية",
+            def: "رعاية تهدف إلى تخفيف الألم والأعراض وتحسين جودة الحياة للمرضى المصابين بأمراض خطيرة.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Pallor",
+            ipa: "PAL-er  [/ˈpælər/]",
+            arPron: "بَـا - لَـر",
+            ar: "الشحوب",
+            def: "نقص اللون الطبيعي للجلد، ويظهر بوضوح في الوجه.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Paralysis (Plegia)",
+            ipa: "puh-RAL-ih-sis / PLEE-juh  [/pəˈrælɪsɪs / ˈpliːdʒə/]",
+            arPron: "بَـا - رَا - لِـ - سِـس  /  بْـلِـيـ - جْـيَـا",
+            ar: "الشلل",
+            def: "فقدان الوظيفة الحركية والقدرة على تحريك عضلة واحدة أو أكثر.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Patient Experience",
+            ipa: "PAY-shunt ik-SPEER-ee-uns  [/ˈpeɪʃənt ɪkˈspɪəriəns/]",
+            arPron: "بَيْـ - شَـنْـت  إِكْـسْـ - بِـيرْ - يَـنْـس",
+            ar: "تجربة المريض",
+            def: "انطباع المريض وتفاعله مع جميع جوانب الرعاية الصحية من تواصل واحترام وسرعة استجابة.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Patient Safety",
+            ipa: "PAY-shunt SAYF-tee  [/ˈpeɪʃənt ˈseɪfti/]",
+            arPron: "بَيْـ - شَـنْـت  سَـيْـفْـ - تِـي",
+            ar: "سلامة المرضى",
+            def: "الحد من مخاطر الضرر غير الضروري المرتبط بالرعاية الصحية إلى أدنى حد مقبول.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Patient-Centeredness",
+            ipa: "PAY-shunt SEN-terd-nus  [/ˈpeɪʃənt ˈsɛntərdnəs/]",
+            arPron: "بَيْـ - شَـنْـت  سِـنْـ - تَـرْدْ - نِـس",
+            ar: "الرعاية المتمحورة حول المريض",
+            def: "تقديم رعاية تحترم وتستجيب لتفضيلات المريض واحتياجاته وقيمه الفردية.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "PDCA Cycle (Plan-Do-Check-Act)",
+            ipa: "PEE-DEE-SEE-AY SY-kul  [/ˌpiːˌdiːˌsiːˈeɪ ˈsaɪkəl/]",
+            arPron: "بِـي - دِي - سِـي - إِيـه  سَـايْـ - كَـل",
+            ar: "دورة التحسين المستمر (PDCA)",
+            def: "منهجية رباعية الخطوات لتطبيق التحسين المستمر وحل المشكلات في الجودة.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Pediatrics",
+            ipa: "pee-dee-AT-riks  [/ˌpiːdiˈætrɪks/]",
+            arPron: "بِـيـ - دِيَـاتْـ - رِكْـس",
+            ar: "طب الأطفال",
+            def: "القسم الطبي المتخصص في رعاية وعلاج الرضع والأطفال والمراهقين.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Peptic Ulcers",
+            ipa: "PEP-tik UL-serz  [/ˈpɛptɪk ˈʌlsərz/]",
+            arPron: "بِـبْـ - تِـك  أَلْـ - سَـرْز",
+            ar: "القرح الهضمية",
+            def: "تقرحات مفتوحة تتكون في البطانة الداخلية للمعدة والجزء العلوي من الأمعاء الدقيقة.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Performance Indicator",
+            ipa: "per-FOR-muns IN-dih-kay-ter  [/pərˈfɔːrməns ˈɪndɪkeɪtər/]",
+            arPron: "بِـيرْ - فُـورْ - مَـنْـس  إِنْـ - دِيـ - كَيْـ - تَـر",
+            ar: "مؤشر الأداء",
+            def: "مقياس كمي يُستخدم لمتابعة جودة وسلامة وكفاءة الخدمات الصحية.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Perioperative Services",
+            ipa: "per-ee-OP-er-uh-tiv SUR-vih-siz  [/ˌpɛriˈɒpərətɪv ˈsɜːrvɪsɪz/]",
+            arPron: "بِـيـ - رِي  أُو - بِـيـ - رَيْـ - تِـف  سِـيرْ - فِـ - سِـز",
+            ar: "خدمات ما حول الجراحة",
+            def: "الرعاية المقدمة للمريض قبل العملية الجراحية وأثناءها وبعدها في وحدة الإفاقة (PACU).",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Personal Protective Equipment (PPE)",
+            ipa: "PUR-suh-nul pruh-TEK-tiv ih-KWIP-munt  [/ˈpɜːrsənəl prəˈtɛktɪv ɪˈkwɪpmənt/]",
+            arPron: "بِـيرْ - سُـو - نَـل  بْـرُو - تِـكْـ - تِـف  إِكْـ - وِيـبْـ - مِـنْـت",
+            ar: "معدات الوقاية الشخصية",
+            def: "ملابس وأدوات متخصصة (مثل القفازات والكمامات والنظارات الواقية) لحماية العاملين الصحيين من المخاطر.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Pharmacist",
+            ipa: "FAR-muh-sist  [/ˈfɑːrməsɪst/]",
+            arPron: "فَـارْ - مَـا - سِـسْـت",
+            ar: "الصيدلي",
+            def: "مختص صحي مدرب على تحضير الأدوية ومراجعة الوصفات وضمان سلامة الجرعات.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Pharmacy",
+            ipa: "FAR-muh-see  [/ˈfɑːrməsi/]",
+            arPron: "فَـارْ - مَـ - سِـي",
+            ar: "قسم الصيدلية",
+            def: "القسم المسؤول عن إدارة وتحضير وصرف الأدوية ومراقبة التداخلات الدوائية.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Physician",
+            ipa: "fih-ZISH-un  [/fɪˈzɪʃən/]",
+            arPron: "فِـيـ - زِيـ - شَـن",
+            ar: "الطبيب (الباطني / المعالج)",
+            def: "طبيب حاصل على ترخيص لممارسة الطب وتشخيص وعلاج الأمراض غير الجراحية.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Physiotherapist",
+            ipa: "fiz-ee-oh-THER-uh-pist  [/ˌfɪzioʊˈθɛrəpɪst/]",
+            arPron: "فِـيزْ - يُـو - ثِـيـ - رَا - بِـسْـت",
+            ar: "أخصائي العلاج الطبيعي",
+            def: "مختص طبي يعالج الإصابات والحالات التي تؤثر في الحركة والوظائف الجسدية.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Planning",
+            ipa: "PLAN-ing  [/ˈplænɪŋ/]",
+            arPron: "بْـلَا - نِـنْـج",
+            ar: "التخطيط",
+            def: "عملية وضع الأهداف وتحديد الخطط والخطوات اللازمة لتحقيقها.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Pneumonia",
+            ipa: "noo-MOH-nyuh  [/njuːˈmoʊniə/]",
+            arPron: "نْـيُـو - مُـونْـ - يَـا",
+            ar: "الالتهاب الرئوي",
+            def: "التهاب وتجمع سوائل في الحويصلات الهوائية بالرئتين بسبب عدوى.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Policy",
+            ipa: "POL-ih-see  [/ˈpɒlɪsi/]",
+            arPron: "بُـو - لِـ - سِـي",
+            ar: "السياسة (السياسات الإدارية)",
+            def: "مجموعة مبادئ أو خطط رسمية معتمدة تحدد كيفية التصرف في مواقف معينة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Polydipsia",
+            ipa: "pol-ee-DIP-see-uh  [/ˌpɒlɪˈdɪpsiə/]",
+            arPron: "بُـو - لِـي - دِيـبْـ - سِـيَـا",
+            ar: "العطش المفرط (السُهاف)",
+            def: "الشعور بعطش شديد ومستمر يفوق المعدل الطبيعي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Polyphagia (Hyperphagia)",
+            ipa: "pol-ee-FAY-juh / hy-per-FAY-juh  [/ˌpɒlɪˈfeɪdʒə / ˌhaɪpərˈfeɪdʒə/]",
+            arPron: "بُـو - لِـي - فَـيْـجْـ - يَـا  /  هَـايْـ - بَـرْ - فَـيْـجْـ - يَـا",
+            ar: "فرط الأكل / الجوع المفرط",
+            def: "الشعور بجوع شديد لا يمكن إشباعه.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Polyuria",
+            ipa: "pol-ee-YOOR-ee-uh  [/ˌpɒlɪˈjʊəriə/]",
+            arPron: "بُـو - لِـي - يُـورْ - يَـا",
+            ar: "كثرة التبول",
+            def: "إنتاج كمية كبيرة من البول خلال اليوم تفوق المعدل الطبيعي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Post-Anesthesia Care Unit (PACU)",
+            ipa: "POHST an-es-THEE-zhuh kair YOO-nit  [/poʊst ˌænəsˈθiːʒə kɛər ˈjuːnɪt/]",
+            arPron: "بُـوسْـت  أَنِـسْـ - ثِـيـ - زْيَـا  كَـيْـر  يُـو - نِـت",
+            ar: "وحدة الإفاقة (رعاية ما بعد التخدير)",
+            def: "وحدة لمراقبة المرضى مباشرة بعد العمليات الجراحية حتى زوال أثر التخدير.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Prefixes",
+            ipa: "PREE-fik-siz  [/ˈpriːfɪksɪz/]",
+            arPron: "بْـرِيـ - فِـكْـ - سِـز",
+            ar: "البادئات الطبية",
+            def: "مقاطع تُضاف إلى بداية جذر الكلمة الطبية لتعديل أو تحديد معناها.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Problem Solving",
+            ipa: "PROB-lum SOL-ving  [/ˈprɒbləm ˈsɒlvɪŋ/]",
+            arPron: "بْـرُوبْـ - لِـمْ  سُـولْـ - فِـنْـج",
+            ar: "حل المشكلات",
+            def: "عملية تحليل العوائق وإيجاد حلول فعالة للمشكلات الإدارية أو الصحية.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Procedures",
+            ipa: "pruh-SEE-jerz  [/prəˈsiːdʒərz/]",
+            arPron: "بْـرُو - سِـيـ - جَـرْز",
+            ar: "الإجراءات",
+            def: "مجموعة خطوات تفصيلية تمثل الطريقة الرسمية المعتمدة لتنفيذ عمل معين.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Promotion",
+            ipa: "pruh-MOH-shun  [/prəˈmoʊʃən/]",
+            arPron: "بْـرُو - مُـو - شَـن",
+            ar: "التعزيز / الترقية / التشجيع",
+            def: "تشجيع تطور شيء أو ترقية موظف أو تعزيز الصحة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Pulmonary Embolism",
+            ipa: "PUL-muh-ner-ee EM-buh-liz-um  [/ˈpʌlmənəri ˈɛmbəlɪzəm/]",
+            arPron: "بُـولْـ - مَـ - نَـ - رِي  إِمْـ - بُـو - لِـيـ - زِمْ",
+            ar: "الانصمام الرئوي (الجلطة الرئوية)",
+            def: "انسداد شريان أو أكثر في الرئتين بسبب جلطة دموية أو دهون أو ورم.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+
+        // Q
+        {
+            en: "Quality Improvement (QI)",
+            ipa: "KWOL-ih-tee im-PROOV-munt  [/ˈkwɒlɪti ɪmˈpruːvmənt/]",
+            arPron: "كْـوَا - لِـ - تِـي  إِمْـ - بْـرُوفْـ - مِـنْـت",
+            ar: "تحسين الجودة",
+            def: "نظام متكامل يدمج التدقيق والمخاطر والمؤشرات وتجربة المريض لتحسين العمليات والنتائج.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Quality Management",
+            ipa: "KWOL-ih-tee MAN-ij-munt  [/ˈkwɒlɪti ˈmænɪdʒmənt/]",
+            arPron: "كْـوَا - لِـ - تِـي  مَـانِـجْـ - مِـنْـت",
+            ar: "إدارة الجودة",
+            def: "نظام إداري شامل يجمع التخطيط والتنفيذ والقياس والتحكم لضمان رعاية آمنة وفعالة.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+
+        // R
+        {
+            en: "Radiology and Imaging",
+            ipa: "ray-dee-OL-uh-jee and IM-ij-ing  [/ˌreɪdiˈɒlədʒi ənd ˈɪmɪdʒɪŋ/]",
+            arPron: "رَا - دِيُـو - لُـو - جِـي  أَنْـد  إِيـ - مِـيـ - جِـنْـج",
+            ar: "قسم الأشعة والتصوير الطبي",
+            def: "قسم يوفر التصوير التشخيصي مثل الأشعة السينية والمقطعية والرنين والموجات فوق الصوتية.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Rash",
+            ipa: "RASH  [/ræʃ/]",
+            arPron: "رَاش",
+            ar: "الطفح الجلدي",
+            def: "تغير في الجلد يؤثر في لونه أو مظهره أو ملمسه، ويُعد من العلامات الطبية.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Recruitment",
+            ipa: "rih-KROOT-munt  [/rɪˈkruːtmənt/]",
+            arPron: "رِيـ - كْـرُوتْـ - مِـنْـت",
+            ar: "الاستقطاب والتوظيف",
+            def: "عملية البحث عن أفراد مؤهلين واستقطابهم للانضمام إلى المنظمة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Rehabilitation Services",
+            ipa: "ree-uh-bil-ih-TAY-shun SUR-vih-siz  [/ˌriːəˌbɪlɪˈteɪʃən ˈsɜːrvɪsɪz/]",
+            arPron: "رِيـ - هَـا - بِـيـ - لِـيـ - تَيْـ - شَـن  سِـيرْ - فِـ - سِـز",
+            ar: "خدمات التأهيل الطبي",
+            def: "تشمل العلاج الطبيعي والوظيفي وعلاج النطق لمساعدة المرضى على التعافي بعد الإصابات.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Replacement",
+            ipa: "rih-PLAYS-munt  [/rɪˈpleɪsmənt/]",
+            arPron: "رِيـ - بْـلَيْـسْـ - مِـنْـت",
+            ar: "الاستبدال (مثل استبدال المفاصل)",
+            def: "إجراء يتم فيه وضع جزء جديد (صناعي أو بديل) مكان جزء تالف في الجسم.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Report",
+            ipa: "rih-PORT  [/rɪˈpɔːrt/]",
+            arPron: "رِيـ - بُـورْت",
+            ar: "التقرير / الإبلاغ",
+            def: "تقديم وصف دقيق أو معلومات رسمية حول حالة أو واقعة معينة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Resources",
+            ipa: "REE-sor-siz  [/ˈriːsɔːrsɪz/]",
+            arPron: "رِيـ - سُـورْ - سِـز",
+            ar: "الموارد",
+            def: "المواد والأموال والكوادر المتاحة التي تُستخدم لتشغيل المؤسسة بكفاءة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Respiratory Failure",
+            ipa: "RES-per-uh-tor-ee FAYL-yer  [/ˈrɛspərətɔːri ˈfeɪljər/]",
+            arPron: "رِيـسْـ - بِـيـ - رَا - تُـو - رِي  فَـيْـلْـ - يَـر",
+            ar: "الفشل التنفسي",
+            def: "حالة حرجة يعجز فيها الجهاز التنفسي عن تبادل الأكسجين وثاني أكسيد الكربون بشكل كافٍ.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Respiratory System",
+            ipa: "RES-per-uh-tor-ee SIS-tum  [/ˈrɛspərətɔːri ˈsɪstəm/]",
+            arPron: "رِيـسْـ - بِـيـ - رَا - تُـو - رِي  سِـسْـ - تِـمْ",
+            ar: "الجهاز التنفسي",
+            def: "الجهاز المسؤول عن عملية التنفس وتبادل الغازات ويشمل الرئتين والممرات الهوائية.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Reusable Medical Device (RMD)",
+            ipa: "ree-YOO-zuh-bul MED-ih-kul dih-VYS  [/riːˈjuːzəbəl ˈmɛdɪkəl dɪˈvaɪs/]",
+            arPron: "رِي - يُـو - زَ - بُـل  مِـيـ - دِيـ - كَـل  دِيـ - فَـايْـس",
+            ar: "الأجهزة الطبية القابلة لإعادة الاستخدام",
+            def: "أجهزة طبية مصممة للاستخدام المتكرر بين المرضى بعد إخضاعها للتنظيف والتعقيم المناسب.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Revenue Cycle Management (RCM)",
+            ipa: "REV-uh-noo SY-kul MAN-ij-munt  [/ˈrɛvənjuː ˈsaɪkəl ˈmænɪdʒmənt/]",
+            arPron: "رِيـ - فِـينْـ - يُـو  سَـايْـ - كَـل  مَـانِـجْـ - مِـنْـت",
+            ar: "إدارة دورة الإيرادات",
+            def: "العملية المالية والإدارية لتتبع خدمات المرضى منذ التسجيل وحتى تحصيل المستحقات.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Rhino- (Prefix)",
+            ipa: "RY-noh  [/ˈraɪnoʊ/]",
+            arPron: "رَايْـ - نُـو",
+            ar: "بادئة: متعلق بالأنف",
+            def: "مقطع يُضاف في بداية المصطلح الطبي ليدل على ارتباطه بالأنف.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Risk Management",
+            ipa: "RISK MAN-ij-munt  [/rɪsk ˈmænɪdʒmənt/]",
+            arPron: "رِسْـك  مَـانِـجْـ - مِـنْـت",
+            ar: "إدارة المخاطر",
+            def: "عملية منهجية لتحديد المخاطر وتقدير احتمالية حدوثها وتأثيرها والسيطرة عليها قبل وقوع الضرر.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Risk Register",
+            ipa: "RISK REJ-ih-ster  [/rɪsk ˈrɛdʒɪstər/]",
+            arPron: "رِسْـك  رِيـ - جِـسْـ - تَـر",
+            ar: "سجل المخاطر",
+            def: "أداة لتوثيق المخاطر المحتملة في المنشأة وتصنيفها وخطط التعامل معها.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Root Cause Analysis (RCA)",
+            ipa: "ROOT kawz uh-NAL-ih-sis  [/ruːt kɔːz əˈnælɪsɪs/]",
+            arPron: "رُوت  كُـوز  أَنَـا - لِـيـ - سِـس",
+            ar: "تحليل السبب الجذري",
+            def: "طريقة منظمة لفهم الأسباب الكامنة وراء وقوع حادث معين وتطوير حلول على مستوى النظام.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Rules",
+            ipa: "ROOLZ  [/ruːlz/]",
+            arPron: "رُولْـز",
+            ar: "القواعد",
+            def: "تعليمات ومبادئ ملزمة تحدد ما هو مسموح وما هو ممنوع داخل بيئة العمل.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+
+        // S
+        {
+            en: "Salary",
+            ipa: "SAL-uh-ree  [/ˈsæləri/]",
+            arPron: "سَـا - لَـ - رِي",
+            ar: "الراتب",
+            def: "مبلغ مالي ثابت يُدفع بانتظام (عادة شهريًا) للموظف مقابل عمله.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Scheduling",
+            ipa: "SKEJ-oo-ling  [/ˈskɛdʒuːlɪŋ/]",
+            arPron: "سْـكِـيـدْ - جُـو - لِـنْـج",
+            ar: "الجدولة",
+            def: "تخطيط وتنظيم الأوقات والمواعيد التي ستُنفذ فيها المهام أو العمليات.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Seizure",
+            ipa: "SEE-zher  [/ˈsiːʒər/]",
+            arPron: "سِـيـ - جَـر",
+            ar: "النوبة (التشنجية)",
+            def: "نشاط كهربائي غير طبيعي ومفاجئ في الدماغ يسبب تغيرات في الوعي والتحكم بالعضلات.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Semi-Critical Items",
+            ipa: "SEM-ee KRIT-ih-kul EYE-tumz  [/ˈsɛmi ˈkrɪtɪkəl ˈaɪtəmz/]",
+            arPron: "سِـيـ - مِـي  كْـرِيـ - تِـيـ - كَـل  آيْـ - تِـمْـز",
+            ar: "الأدوات شبه الحرجة",
+            def: "أدوات تلامس الأغشية المخاطية أو الجلد غير السليم وتتطلب تطهيرًا عالي المستوى (HLD).",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Septic Shock",
+            ipa: "SEP-tik shok  [/ˈsɛptɪk ʃɒk/]",
+            arPron: "سِـبْـ - تِـك  شُـوك",
+            ar: "الصدمة الإنتانية",
+            def: "حالة طبية طارئة تهدد الحياة ناتجة عن عدوى شديدة تؤدي إلى هبوط حاد في ضغط الدم.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Signs",
+            ipa: "SYNZ  [/saɪnz/]",
+            arPron: "سَـايْـنْـز",
+            ar: "العلامات الطبية (الموضوعية)",
+            def: "مؤشرات مرضية موضوعية يمكن للطبيب أو الآخرين رؤيتها أو قياسها مثل الطفح الجلدي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Sneezing",
+            ipa: "SNEE-zing  [/ˈsniːzɪŋ/]",
+            arPron: "سْـنِـيـ - زِنْـج",
+            ar: "العطاس",
+            def: "اندفاع لا إرادي ومفاجئ للهواء من الرئتين عبر الأنف والفم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Spaulding Classification",
+            ipa: "SPAWL-ding klas-ih-fih-KAY-shun  [/ˈspɔːldɪŋ ˌklæsɪfɪˈkeɪʃən/]",
+            arPron: "سْـبُـولْـ - دِنْـج  كْـلَا - سِـيـ - فِـيـ - كَيْـ - شَـن",
+            ar: "تصنيف سبولدينج",
+            def: "نظام يصنف الأدوات الطبية إلى حرجة وشبه حرجة وغير حرجة لتحديد مستوى التعقيم أو التطهير المطلوب.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Speech Therapy",
+            ipa: "SPEECH THER-uh-pee  [/spiːtʃ ˈθɛrəpi/]",
+            arPron: "سْـبِـيـتْـش  ثِـيـ - رَا - بِـي",
+            ar: "علاج النطق والتخاطب",
+            def: "خدمة تأهيلية تساعد المرضى على تحسين مهارات النطق واللغة والبلع.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Splenomegaly",
+            ipa: "splee-noh-MEG-uh-lee  [/ˌspliːnoʊˈmɛɡəli/]",
+            arPron: "سْـبْـلِـيـ - نُـو - مِـيـ - جَـ - لِـي",
+            ar: "تضخم الطحال",
+            def: "زيادة غير طبيعية في حجم الطحال تشير إلى وجود عدوى أو مرض كامن.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Spore",
+            ipa: "SPOR  [/spɔːr/]",
+            arPron: "سْـبُـور",
+            ar: "البوغ البكتيري (الأبواغ)",
+            def: "خلية بكتيرية كامنة محاطة بجدار سميك مقاوم للمطهرات العادية ولا يُقضى عليها إلا بالتعقيم.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Sputum",
+            ipa: "SPYOO-tum  [/ˈspjuːtəm/]",
+            arPron: "سْـبْـيُـو - تَـمْ",
+            ar: "البلغم",
+            def: "مخاط سميك تنتجه الرئتان والممرات التنفسية ويُخرج مع السعال.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Staffing",
+            ipa: "STAF-ing  [/ˈstæfɪŋ/]",
+            arPron: "سْـتَـا - فِـنْـج",
+            ar: "إدارة التوظيف والكوادر",
+            def: "تحديد وإدارة أعداد وتخصصات العاملين المطلوبين في المنظمة.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Sterilization",
+            ipa: "ster-uh-ly-ZAY-shun  [/ˌstɛrəlaɪˈzeɪʃən/]",
+            arPron: "سْـتِـيـ - رِيـ - لَايْـ - زَيْـ - شَـن",
+            ar: "التعقيم",
+            def: "التدمير الكامل لجميع أشكال الحياة الميكروبية بما في ذلك البكتيريا والفيروسات والفطريات والأبواغ.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Stiffness",
+            ipa: "STIF-nus  [/ˈstɪfnəs/]",
+            arPron: "سْـتِـفْـ - نِـس",
+            ar: "تيبس العضلات (التصلب)",
+            def: "الإحساس بالألم أو الشد وصعوبة الحركة في العضلات.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Suffixes",
+            ipa: "SUF-ik-siz  [/ˈsʌfɪksɪz/]",
+            arPron: "سَـ - فِـكْـ - سِـز",
+            ar: "اللواحق الطبية",
+            def: "مقاطع تُضاف إلى نهاية جذر الكلمة الطبية لتحديد الإجراء أو الحالة المرضية.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Surgeon",
+            ipa: "SUR-jun  [/ˈsɜːrdʒən/]",
+            arPron: "سِـيرْ - جَـن",
+            ar: "الجراح",
+            def: "طبيب مؤهل ومدرب على إجراء العمليات الجراحية.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Surgical Site Infections (SSIs)",
+            ipa: "SUR-jih-kul syt in-FEK-shunz  [/ˈsɜːrdʒɪkəl saɪt ɪnˈfɛkʃənz/]",
+            arPron: "سِـيرْ - جِـيـ - كَـل  سَـايْـت  إِنْـ - فِـكْـ - شَـنْـز",
+            ar: "عدوى موضع الجراحة",
+            def: "عدوى تحدث في الجزء من الجسم الذي أُجريت فيه العملية الجراحية.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Symptoms",
+            ipa: "SIMP-tumz  [/ˈsɪmptəmz/]",
+            arPron: "سِـمْـبْـ - تَـمْـز",
+            ar: "الأعراض الطبية (الذاتية)",
+            def: "تجربة المريض الشخصية الذاتية التي يشعر بها ولا يراها الآخرون مثل الألم والإرهاق.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+
+        // T
+        {
+            en: "Tachycardia",
+            ipa: "tak-ih-KAR-dee-uh  [/ˌtækɪˈkɑːrdiə/]",
+            arPron: "تَـا - كِـي - كَـارْ - دِيَـا",
+            ar: "تسرّع القلب",
+            def: "ارتفاع معدل ضربات القلب إلى أكثر من 100 نبضة في الدقيقة.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Tachypnea",
+            ipa: "tak-ip-NEE-uh  [/ˌtækɪpˈniːə/]",
+            arPron: "تَـا - كِـيـ - بْـنِـيَـا",
+            ar: "تسرّع التنفس",
+            def: "ارتفاع معدل التنفس في الدقيقة فوق المعدل الطبيعي.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Team",
+            ipa: "TEEM  [/tiːm/]",
+            arPron: "تِـيـمْ",
+            ar: "الفريق",
+            def: "مجموعة من الأشخاص يعملون معًا لتحقيق هدف مشترك.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Teamwork",
+            ipa: "TEEM-wurk  [/ˈtiːmwɜːrk/]",
+            arPron: "تِـيـمْ - وُورْك",
+            ar: "العمل الجماعي",
+            def: "التعاون الفعال والمنظم بين أعضاء الفريق لإنجاز العمل بنجاح.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Thoraco- (Prefix)",
+            ipa: "THOR-uh-koh  [/ˈθɔːrəkoʊ/]",
+            arPron: "ثُـو - رَا - كُـو",
+            ar: "بادئة: متعلق بالصدر",
+            def: "مقطع يُضاف في بداية المصطلح الطبي ليدل على ارتباطه بالقفص الصدري.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Timeliness",
+            ipa: "TYM-lee-nus  [/ˈtaɪmlinəs/]",
+            arPron: "تَـايْـمْـ - لِـيـ - نِـس",
+            ar: "تقديم الرعاية في الوقت المناسب",
+            def: "تقليل فترات الانتظار والتأخيرات الضارة لكل من يتلقى الرعاية أو يقدمها.",
+            cat: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            en: "Transducers",
+            ipa: "tranz-DOO-serz  [/trænzˈdjuːsərz/]",
+            arPron: "تْـرَانْـسْـ - دْيُـو - سَـرْز",
+            ar: "مجسات التصوير (محولات الطاقة)",
+            def: "مجسات أجهزة الموجات فوق الصوتية التي تتطلب تطهيرًا دقيقًا بين المرضى.",
+            cat: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            en: "Transplantation",
+            ipa: "tranz-plan-TAY-shun  [/ˌtrænsplænˈteɪʃən/]",
+            arPron: "تْـرَانْـسْـ - بْـلَانْـ - تَيْـ - شَـن",
+            ar: "زراعة الأعضاء أو الأنسجة",
+            def: "إجراء طبي يُنقل فيه عضو أو نسيج أو خلايا من متبرع إلى جسم متلقٍ.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Tremor",
+            ipa: "TREM-er  [/ˈtrɛmər/]",
+            arPron: "تْـرِيـ - مَـر",
+            ar: "الرعشة",
+            def: "حالة عصبية تتمثل في حركات اهتزازية أو ارتجافية لا إرادية في جزء من الجسم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Triage",
+            ipa: "TREE-ahzh  [/ˈtriːɑːʒ/]",
+            arPron: "تْـرِيـ - يَـاج",
+            ar: "الفرز الطبي (في الطوارئ)",
+            def: "التقييم السريع للمرضى في قسم الطوارئ لتحديد أولوية العلاج حسب خطورة الحالة.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+
+        // U
+        {
+            en: "Ultrasound",
+            ipa: "UL-truh-sownd  [/ˈʌltrəsaʊnd/]",
+            arPron: "أَلْـ - تْـرَا - سَـاوْنْـد",
+            ar: "التصوير بالموجات فوق الصوتية (السونار)",
+            def: "تقنية تصوير آمنة تستخدم موجات صوتية عالية التردد لفحص الأعضاء الداخلية والجنين.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Unconsciousness",
+            ipa: "un-KON-shus-nus  [/ʌnˈkɒnʃəsnəs/]",
+            arPron: "أَنْ - كُـونْـ - شَـسْـ - نِـس",
+            ar: "فقدان الوعي",
+            def: "حالة يفقد فيها الشخص إدراكه للبيئة المحيطة ولا يستجيب للمؤثرات الخارجية كالضوء والصوت.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            en: "Urinary Tract",
+            ipa: "YOOR-ih-ner-ee trakt  [/ˈjʊərɪnəri trækt/]",
+            arPron: "يُـورْ - يَـ - نَـ - رِي  تْـرَاكْـت",
+            ar: "المسالك البولية",
+            def: "الجهاز المسؤول عن إنتاج وتخزين وطرح البول من الجسم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+
+        // V
+        {
+            en: "Varicose Veins",
+            ipa: "VAR-ih-kohs vaynz  [/ˈværɪkoʊs veɪnz/]",
+            arPron: "فَـا - رِيـ - كُـوس  فَـيْـنْـز",
+            ar: "دوالي الأوردة",
+            def: "أوردة متورمة وملتوية وبارزة تظهر تحت الجلد مباشرة في الساقين أو القدمين.",
+            cat: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            en: "Ventilators",
+            ipa: "VEN-tih-lay-terz  [/ˈvɛntɪleɪtərz/]",
+            arPron: "فِـنْـ - تِـيـ - لَيْـ - تَـرْز",
+            ar: "أجهزة التنفس الصناعي",
+            def: "أجهزة طبية في العناية المركزة تساعد المرضى غير القادرين على التنفس بشكل طبيعي.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            en: "Vision",
+            ipa: "VIZH-un  [/ˈvɪʒən/]",
+            arPron: "فِـيـ - جَـن",
+            ar: "الرؤية (رؤية المنظمة)",
+            def: "التصور المستقبلي لما تطمح المنظمة للوصول إليه على المدى البعيد.",
+            cat: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            en: "Vomiting",
+            ipa: "VOM-ih-ting  [/ˈvɒmɪtɪŋ/]",
+            arPron: "فُـو - مِـ - تِـنْـج",
+            ar: "القيء (الاستفراغ)",
+            def: "إخراج محتويات المعدة بقوة عن طريق الفم.",
+            cat: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+
+        // X
+        {
+            en: "X-Rays",
+            ipa: "EKS-rayz  [/ˈɛks reɪz/]",
+            arPron: "إِكْـس - رَيْـز",
+            ar: "الأشعة السينية",
+            def: "تقنية تصوير إشعاعي تُستخدم لفحص العظام والصدر والكشف عن الكسور والالتهابات.",
+            cat: "أقسام المستشفى والكوادر الطبية"
+        }
+    ];
+
+    
+
+    // Sort alphabetically A -> Z
+    medicalTerms.sort((a, b) => a.en.localeCompare(b.en, 'en', { sensitivity: 'base' }));
+
+    const bookPages = [
+        {
+            type: "cover",
+            title: "غلاف الكتاب الأكاديمي"
+        },
+        {
+            type: "toc",
+            title: "فهرس أبواب وفصول الكتاب"
+        },
+        {
+            type: "chapter",
+            chapNum: "الفصل الأول — الجزء الأول (CH 1 - Lect 1)",
+            title: "العلامات والأعراض الطبية (Medical Signs & Symptoms)",
+            desc: "يتناول هذا الباب الفرق الجوهري بين الأعراض الذاتية (Symptoms) والعلامات الموضوعية (Signs)، ويستعرض علامات وأعراض أجهزة الجسم الرئيسية: التنفسي، العصبي، الهضمي، البولي، القلبي الوعائي، والجلد.",
+            catFilter: "العلامات والأعراض الطبية (CH 1 - Lect 1)"
+        },
+        {
+            type: "chapter",
+            chapNum: "الفصل الأول — الجزء الثاني (CH 1 - Lect 2)",
+            title: "الأمراض والتشخيصات والعمليات الجراحية",
+            desc: "يغطي هذا الباب الأمراض الشائعة في الجهاز التنفسي والهضمي والقلبي والعصبي، بالإضافة إلى البادئات (Prefixes) واللواحق الطبية (Suffixes) والمصطلحات الجراحية.",
+            catFilter: "الأمراض والتشخيصات والجراحة (CH 1 - Lect 2)"
+        },
+        {
+            type: "chapter",
+            chapNum: "الفصل الثاني (CH 2 - Part 1)",
+            title: "إدارة المستشفيات والموارد البشرية والمالية",
+            desc: "يشرح هذا الباب مفاهيم الإدارة الصحية، التخطيط، التنظيم، التوجيه، الرقابة، التوظيف، إعداد الميزانيات، وإدارة دورة الإيرادات.",
+            catFilter: "إدارة المستشفيات والموارد (CH 2)"
+        },
+        {
+            type: "chapter",
+            chapNum: "الفصل الثاني — ملحق الأقسام (CH 2 - Part 2)",
+            title: "أقسام المستشفى السريرية والكوادر الطبية",
+            desc: "يستعرض هذا الباب تخصصات الكوادر الطبية والصحية والأقسام السريرية والمساندة داخل المستشفى مثل الطوارئ، العناية المركزة، العمليات، حديثي الولادة، الأشعة، والمختبر.",
+            catFilter: "أقسام المستشفى والكوادر الطبية"
+        },
+        {
+            type: "chapter",
+            chapNum: "الفصل الثالث (CH 3 - Part 1 & 2)",
+            title: "إدارة الجودة وسلامة المرضى",
+            desc: "يركز هذا الباب على أبعاد جودة الرعاية الصحية، الاعتماد الصحي، الحوكمة السريرية، التدقيق السريري، إدارة المخاطر، مؤشرات الأداء (KPIs)، وتحليل السبب الجذري (RCA).",
+            catFilter: "إدارة الجودة وسلامة المرضى (CH 3)"
+        },
+        {
+            type: "chapter",
+            chapNum: "الفصلان الرابع والخامس (CH 4 & CH 5)",
+            title: "التعقيم ومكافحة العدوى والنظافة البيئية",
+            desc: "يتناول هذا الباب عمليات قسم التعقيم المركزي (CSSD)، تصنيف سبولدينج للأدوات الطبية، مستويات التطهير، معدات الوقاية الشخصية (PPE)، وإدارة الانسكابات البيولوجية.",
+            catFilter: "التعقيم ومكافحة العدوى والنظافة البيئية (CH 4 & 5)"
+        },
+        {
+            type: "dictionary",
+            title: "المعجم الشامل المرتب أبجديًا (A – Z)"
+        },
+        {
+            type: "quiz",
+            title: "اختبار المراجعة التفاعلي الذاتي"
+        }
+    ];
+
+    let currentPage = 0;
+    let quizScore = 0;
+    let quizTotal = 0;
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.getElementById('darkModeBtn');
+        btn.textContent = document.body.classList.contains('dark-mode') ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
+    }
+
+    function speakTerm(text, btn) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            let cleanText = text
+                .replace(/\(Prefix\)/gi, '')
+                .replace(/\(Suffix\)/gi, '')
+                .replace(/\(.*?\)/g, '')
+                .replace(/-/g, '')
+                .trim();
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.85;
+            if (btn) {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '🔈...';
+                utterance.onend = () => { btn.innerHTML = orig; };
+                utterance.onerror = () => { btn.innerHTML = orig; };
+            }
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    function copyTermCard(idx) {
+        const t = medicalTerms[idx];
+        const text = `English Term: ${t.en}\nالنطق بالعربي: ${t.arPron}\nArabic Translation: ${t.ar}\nالتعريف: ${t.def}`;
+        navigator.clipboard.writeText(text).then(() => showToast(`تم نسخ "${t.en}"`));
+    }
+
+    function goToPage(pageIdx) {
+        if (pageIdx < 0 || pageIdx >= bookPages.length) return;
+        currentPage = pageIdx;
+        renderPage();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { goToPage(currentPage + 1); }
+    function prevPage() { goToPage(currentPage - 1); }
+
+    function renderTermCardsHTML(list) {
+        if (list.length === 0) {
+            return `<p style="text-align:center; color:var(--text-muted); padding:2rem;">لا توجد مصطلحات مطابقة لبحثك.</p>`;
+        }
+        return `<div class="book-terms-grid">` + list.map(t => `
+            <div class="b-term-card">
+                <div class="b-term-top">
+                    <span class="b-en-word">${t.en}</span>
+                    <div class="b-mini-btns">
+                        <button class="mini-icon-btn" data-term="${t.en.replace(/"/g, '&quot;')}" onclick="speakTerm(this.dataset.term, this)">🔊 استمع</button>
+                        <button class="mini-icon-btn" onclick="copyTermCard(${t.origIdx})">📋 نسخ</button>
+                    </div>
+                </div>
+                <div class="b-pron-box">${t.arPron}</div>
+                <div class="b-ar-meaning">${t.ar}</div>
+                <div class="b-def-text">${t.def}</div>
+            </div>
+        `).join('') + `</div>`;
+    }
+
+    function renderPage() {
+        const page = bookPages[currentPage];
+        const pageBody = document.getElementById('pageBody');
+        const totalPages = bookPages.length;
+
+        document.getElementById('headerChapterLabel').textContent = page.title;
+        document.getElementById('headerPageNum').textContent = `صفحة ${currentPage + 1} من ${totalPages}`;
+        document.getElementById('footerPageIndicator').textContent = `${currentPage + 1} / ${totalPages}`;
+        document.getElementById('prevBtn').disabled = currentPage === 0;
+        document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
+        document.getElementById('progressBar').style.width = `${((currentPage + 1) / totalPages) * 100}%`;
+
+        const indexedTerms = medicalTerms.map((t, i) => ({ ...t, origIdx: i }));
+
+        if (page.type === "cover") {
+            pageBody.innerHTML = `
+                <div class="cover-page">
+                    <div class="cover-emblem">⚕️</div>
+                    <div class="cover-college">كليات الخليج • مقرر المصطلحات الطبية</div>
+                    <h1 class="cover-title">الكتاب الإلكتروني الشامل للمصطلحات الطبية</h1>
+                    <div class="cover-subtitle-en">Medical Signs and Symptoms & Healthcare Terminology</div>
+                    <p class="cover-desc">
+                        مرجع دراسي تفاعلي متكامل يضم كافة فصول المقرر، مصمم بنظام الكتاب الرقمي لتسهيل المذاكرة والحفظ مع النطق العربي المقطّع، الصوت التفاعلي، والاختبارات الذاتية.
+                    </p>
+                    <div class="cover-stats">
+                        <div class="cover-stat-pill">📚 6 أبواب دراسية متكاملة</div>
+                        <div class="cover-stat-pill">🩺 ${medicalTerms.length} مصطلح طبي وإداري</div>
+                        <div class="cover-stat-pill">🔊 نطق صوتي ومقطّع</div>
+                    </div>
+                    <button class="start-reading-btn" onclick="goToPage(1)">ابدأ تصفح الكتاب ←</button>
+                </div>
+            `;
+        } else if (page.type === "toc") {
+            const chapters = bookPages.slice(2, 8);
+            pageBody.innerHTML = `
+                <div class="toc-header">
+                    <h2>📑 فهرس الكتاب الإلكتروني</h2>
+                    <p style="color:var(--text-muted)">اضغط على أي باب للانتقال المباشر إلى صفحته</p>
+                </div>
+                <div class="toc-list">
+                    ${chapters.map((ch, idx) => {
+                        const count = medicalTerms.filter(t => t.cat === ch.catFilter).length;
+                        return `
+                            <div class="toc-item" onclick="goToPage(${idx + 2})">
+                                <div>
+                                    <div class="toc-chap-num">${ch.chapNum}</div>
+                                    <div class="toc-chap-title">${ch.title}</div>
+                                </div>
+                                <div class="toc-chap-meta">
+                                    <span>عدد المصطلحات: <strong>${count}</strong></span>
+                                    <span>صفحة ${idx + 3} ←</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                    <div class="toc-item" style="border-right-color:#0d9488" onclick="goToPage(8)">
+                        <div>
+                            <div class="toc-chap-num">ملحق المعجم الكامل</div>
+                            <div class="toc-chap-title">القاموس الشامل المرتب أبجديًا (A – Z)</div>
+                        </div>
+                        <div class="toc-chap-meta">
+                            <span>جميع المصطلحات: <strong>${medicalTerms.length}</strong></span>
+                            <span>صفحة 9 ←</span>
+                        </div>
+                    </div>
+                    <div class="toc-item" style="border-right-color:#f59e0b" onclick="goToPage(9)">
+                        <div>
+                            <div class="toc-chap-num">التقييم الذاتي</div>
+                            <div class="toc-chap-title">اختبر نفسك في المصطلحات الطبية</div>
+                        </div>
+                        <div class="toc-chap-meta">
+                            <span>أسئلة تفاعلية فورية</span>
+                            <span>صفحة 10 ←</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else if (page.type === "chapter") {
+            const chapTerms = indexedTerms.filter(t => t.cat === page.catFilter);
+            pageBody.innerHTML = `
+                <div class="chapter-banner">
+                    <div style="font-size:0.85rem; font-weight:800; color:#0d9488; margin-bottom:0.25rem;">${page.chapNum}</div>
+                    <h2>${page.title}</h2>
+                    <p>${page.desc}</p>
+                </div>
+                <div class="book-filter-bar">
+                    <input type="text" class="book-search-input" placeholder="ابحث داخل هذا الباب (${chapTerms.length} مصطلح)..." oninput="filterChapterTerms(this.value, '${page.catFilter}')">
+                </div>
+                <div id="chapterCardsContainer">
+                    ${renderTermCardsHTML(chapTerms)}
+                </div>
+            `;
+        } else if (page.type === "dictionary") {
+            pageBody.innerHTML = `
+                <div class="chapter-banner">
+                    <h2>🔍 المعجم الشامل المرتب أبجديًا (A – Z)</h2>
+                    <p>جميع مصطلحات الكتاب (${medicalTerms.length} مصطلح) مرتبة أبجديًا للبحث السريع والمراجعة الشاملة.</p>
+                </div>
+                <div class="book-filter-bar">
+                    <input type="text" class="book-search-input" placeholder="ابحث في كل الكتاب بالإنجليزي أو العربي..." oninput="filterAllDictionary(this.value)">
+                </div>
+                <div id="allDictContainer">
+                    ${renderTermCardsHTML(indexedTerms)}
+                </div>
+            `;
+        } else if (page.type === "quiz") {
+            renderQuizQuestion();
+        }
+    }
+
+    function filterChapterTerms(q, catFilter) {
+        const query = q.trim().toLowerCase();
+        const filtered = medicalTerms
+            .map((t, i) => ({ ...t, origIdx: i }))
+            .filter(t => t.cat === catFilter && (!query || t.en.toLowerCase().includes(query) || t.ar.includes(query) || t.arPron.includes(query)));
+        document.getElementById('chapterCardsContainer').innerHTML = renderTermCardsHTML(filtered);
+    }
+
+    function filterAllDictionary(q) {
+        const query = q.trim().toLowerCase();
+        const filtered = medicalTerms
+            .map((t, i) => ({ ...t, origIdx: i }))
+            .filter(t => !query || t.en.toLowerCase().includes(query) || t.ar.includes(query) || t.arPron.includes(query) || t.def.includes(query));
+        document.getElementById('allDictContainer').innerHTML = renderTermCardsHTML(filtered);
+    }
+
+    function renderQuizQuestion() {
+        const pageBody = document.getElementById('pageBody');
+        const correctTerm = medicalTerms[Math.floor(Math.random() * medicalTerms.length)];
+        const others = medicalTerms.filter(t => t.en !== correctTerm.en).sort(() => 0.5 - Math.random()).slice(0, 3);
+        const options = [correctTerm, ...others].sort(() => 0.5 - Math.random());
+
+        pageBody.innerHTML = `
+            <div class="quiz-card">
+                <div style="font-weight:800; color:#0d9488; font-size:0.95rem;">النتيجة الحالية: ${quizScore} من ${quizTotal}</div>
+                <p style="margin-top:0.75rem; color:var(--text-muted)">ما هي الترجمة الصحيحة للمصطلح التالي؟</p>
+                <div class="quiz-word">${correctTerm.en}</div>
+                <div style="color:#0284c7; font-weight:800; margin-bottom:0.5rem;">(${correctTerm.arPron})</div>
+                <button class="mini-icon-btn" data-term="${correctTerm.en.replace(/"/g, '&quot;')}" onclick="speakTerm(this.dataset.term, this)">🔊 استمع للنطق</button>
+                <div class="quiz-options">
+                    ${options.map(opt => `
+                        <button class="quiz-opt-btn" onclick="checkQuizAnswer(this, ${opt.en === correctTerm.en}, '${correctTerm.ar.replace(/'/g, "\'")}')">
+                            ${opt.ar}
+                        </button>
+                    `).join('')}
+                </div>
+                <button class="nav-page-btn" style="margin-top:1.5rem;" onclick="renderQuizQuestion()">السؤال التالي ←</button>
+            </div>
+        `;
+    }
+
+    function checkQuizAnswer(btn, isCorrect, correctAr) {
+        const allBtns = document.querySelectorAll('.quiz-opt-btn');
+        allBtns.forEach(b => b.disabled = true);
+        quizTotal++;
+        if (isCorrect) {
+            quizScore++;
+            btn.classList.add('correct');
+            showToast("إجابة صحيحة! أحسنت 🎉");
+        } else {
+            btn.classList.add('wrong');
+            allBtns.forEach(b => {
+                if (b.textContent.trim() === correctAr) b.classList.add('correct');
+            });
+            showToast("إجابة غير صحيحة، راجع الإجابة الصحيحة باللون الأخضر");
+        }
+    }
+
+    // Keyboard navigation (Left/Right arrows)
+    document.addEventListener('keydown', (e) => {
+        if (document.activeElement.tagName === 'INPUT') return;
+        if (e.key === 'ArrowLeft') nextPage();
+        if (e.key === 'ArrowRight') prevPage();
+    });
+
+    renderPage();
+</script>
+</body>
+</html>
